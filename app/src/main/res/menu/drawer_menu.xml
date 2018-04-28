@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item  android:id="@+id/home" android:title="الرئيسية" />
+        <item  android:id="@+id/service" android:title="خدماتنا " />
+        <item  android:id="@+id/parts" android:title="حراج" />
+        <item  android:id="@+id/archive" android:title="جريدة الاسبوعية" />
+        <item  android:id="@+id/call_us" android:title="الأتصال بنا" />
+        <item  android:id="@+id/sign_up" android:title="تسجيل" />
+        <item  android:id="@+id/sign_in" android:title="دخول" />
+
+    </group>
+</menu>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="50dp">
+
+
+    <LinearLayout
+        android:id="@+id/linearlaycate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:background="#2a87c7"
+        android:layoutDirection="rtl"
+        android:layout_alignParentBottom="true"
+        android:foregroundGravity="bottom"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:src="@drawable/main5"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:text="الرئيسية"
+                android:textColor="#FFF"/>
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:src="@drawable/search5"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="البحث"
+                android:textSize="12sp"
+                android:textColor="#FFF"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:src="@drawable/about5"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:text="نبذه عنا"
+                android:textColor="#FFF"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:src="@drawable/contact5"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="إتصل بنا"
+                android:textSize="12sp"
+                android:textColor="#FFF"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFF"
+        android:layout_above="@id/linearlaycate">
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <im.delight.android.webview.AdvancedWebView
+                android:id="@+id/webViewsearch"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_marginTop="50dp"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linearlaycate">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/aboutcontent"
+            android:scaleType="fitXY"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl"
+        android:layout_above="@id/linearlaycate">
+
+        <alosboiya.jeddahwave.TextViewWithFont
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:text="البريد الألكترونى"/>
+
+        <alosboiya.jeddahwave.TextViewWithFont
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="15sp"
+            android:textColor="#64B5F6"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/text1"
+            android:text="info@alosboya.com.sa"/>
+
+        <alosboiya.jeddahwave.TextViewWithFont
+            android:id="@+id/text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:layout_below="@+id/text2"
+            android:text="الجوال"/>
+
+        <alosboiya.jeddahwave.TextViewWithFont
+            android:id="@+id/text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="15sp"
+            android:textColor="#64B5F6"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/text3"
+            android:text="+966 9200 09762"/>
+
+        <alosboiya.jeddahwave.TextViewWithFont
+            android:id="@+id/text5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:layout_below="@+id/text4"
+            android:text="العنوان"/>
+
+        <alosboiya.jeddahwave.TextViewWithFont
+            android:id="@+id/text6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:textSize="13sp"
+            android:textColor="#000"
+            android:layout_below="@+id/text5"
+            android:text="المملكة العربية السعودية - جدة - حى الروضة"/>
+
+        <alosboiya.jeddahwave.TextViewWithFont
+            android:id="@+id/text7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:textSize="13sp"
+            android:textColor="#000"
+            android:layout_below="@+id/text6"
+            android:text="شارع الأمير سعود الفيصل - مبنى البيت الانيق"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/contactuscontent"
+            android:visibility="gone"
+            android:scaleType="fitXY"/>
+
+    </RelativeLayout>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linearlaycate">
+
+        <im.delight.android.webview.AdvancedWebView
+            android:id="@+id/webView"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_marginTop="50dp"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+
+
+
+</RelativeLayout>

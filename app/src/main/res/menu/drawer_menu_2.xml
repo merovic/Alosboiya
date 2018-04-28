@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:icon="@drawable/home" android:id="@+id/home" android:title="الرئيسية" />
+        <item  android:icon="@drawable/about_globe" android:id="@+id/about" android:title="عقارات" />
+        <item  android:icon="@drawable/customer_service" android:id="@+id/service" android:title="سيارات " />
+        <item  android:icon="@drawable/ask" android:id="@+id/Ask_adv" android:title="طلب الأعلان" />
+        <item  android:icon="@drawable/add_addvertise" android:id="@+id/Advertisement" android:title=" اضف الأعلانات المبوب " />
+        <item  android:icon="@drawable/pieces" android:id="@+id/parts" android:title="الاقسام" />
+        <item android:icon="@drawable/shuffle" android:id="@+id/archive" android:title="الأرشيف" />
+        <item  android:icon="@drawable/phone_call" android:id="@+id/call_us" android:title="الأتصال بنا" />
+        <item  android:icon="@drawable/add_user" android:id="@+id/sign_up" android:title="تسجيل" />
+        <item  android:icon="@drawable/traffic_sign"  android:id="@+id/sign_in" android:title="دخول" />
+        <item  android:icon="@drawable/exit_sign" android:id="@+id/exit" android:title="Exit" />
+        <item android:title="Share">
+            <menu>
+                <item android:icon="@drawable/share" android:id="@+id/share" android:title="Share" />
+
+            </menu> />
+        </item>
+    </group>
+</menu>

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1020773876639",
+    "firebase_url": "https://fir-alosboiya.firebaseio.com",
+    "project_id": "firebase-alosboiya",
+    "storage_bucket": "firebase-alosboiya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020773876639:android:05d0f35af91f9a4a",
+        "android_client_info": {
+          "package_name": "alosboiya.jeddahwave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020773876639-pilv55nci6qcaqs9glmvj3ngqqnf9eco.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1020773876639-gpk69rrnttjmu4bihgrtblf3fpdsn4ba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8KCVroT2jfSzrufzjpl6LoNa7B_AUTXE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
