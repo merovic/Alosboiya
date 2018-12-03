@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/hhhh7"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/ToolBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="@dimen/abc_action_bar_default_height_material">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <alosboiya.jeddahwave.Utils.TextViewWithFont
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="حسابي"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="خروج"
+            android:id="@+id/el5orog"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bluebutton2"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="الرصيد"
+            android:textColor="#fff"
+            android:layout_marginRight="5dp"
+            android:textSize="15sp"
+            android:id="@+id/cridet"
+            android:layout_weight="1"
+            android:background="@drawable/bluebutton2"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="الاعدادات"
+            android:textColor="#fff"
+            android:layout_marginRight="5dp"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:id="@+id/settingaccount"
+            android:background="@drawable/bluebutton2"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="الصفحة الشخصية"
+            android:textColor="#fff"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:id="@+id/myprofile"
+            android:background="@drawable/bluebutton2"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="اعلاناتي"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:id="@+id/announcepage"
+            android:background="@drawable/bluebutton2"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/account_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:clickable="true"/>
+
+
+</LinearLayout>

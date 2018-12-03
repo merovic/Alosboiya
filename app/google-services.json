@@ -10,16 +10,12 @@
       "client_info": {
         "mobilesdk_app_id": "1:1020773876639:android:05d0f35af91f9a4a",
         "android_client_info": {
-          "package_name": "alosboiya.jeddahwave"
+          "package_name": "alosboiya.com"
         }
       },
       "oauth_client": [
         {
           "client_id": "1020773876639-pilv55nci6qcaqs9glmvj3ngqqnf9eco.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "1020773876639-gpk69rrnttjmu4bihgrtblf3fpdsn4ba.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,6 +31,57 @@
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020773876639:android:4a35d376776ab4db",
+        "android_client_info": {
+          "package_name": "alosboiya.jeddahwave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020773876639-4j3fqg0hpenq2ohr0vel2ge5c69bkamq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "alosboiya.jeddahwave",
+            "certificate_hash": "49688c749b103a66ecc6f01ac6ba21333038fafe"
+          }
+        },
+        {
+          "client_id": "1020773876639-pilv55nci6qcaqs9glmvj3ngqqnf9eco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8KCVroT2jfSzrufzjpl6LoNa7B_AUTXE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020773876639-pilv55nci6qcaqs9glmvj3ngqqnf9eco.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1020773876639-q5bq6ibhb7qq13hme6nbt2rmab2ctsf0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alosboiya.app"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

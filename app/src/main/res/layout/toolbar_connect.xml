@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:layoutDirection="rtl"
-    tools:context=".MainActivity">
+    tools:context=".OldProject.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layoutDirection="ltr"
             android:background="#2a87c7">
 
-            <alosboiya.jeddahwave.TextViewWithFont
+            <alosboiya.jeddahwave.Utils.TextViewWithFont
                 android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

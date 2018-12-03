@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@drawable/hhh3">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo2"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/logo"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/membersbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="220dp"
+            android:layout_weight="1"
+            android:background="@drawable/aadaa"
+            android:layout_margin="10dp"/>
+
+        <ImageButton
+            android:id="@+id/haragebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="220dp"
+            android:layout_weight="1"
+            android:background="@drawable/harag"
+            android:layout_margin="10dp"/>
+
+        <ImageButton
+            android:id="@+id/garedabutton"
+            android:layout_width="wrap_content"
+            android:layout_height="220dp"
+            android:layout_weight="1"
+            android:background="@drawable/gareda"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

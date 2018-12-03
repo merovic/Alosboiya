@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/hhh3">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/ToolBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#4798D0"
+        android:minHeight="@dimen/abc_action_bar_default_height_material">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=" دخول الاعضاء"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="22sp"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:src="@drawable/logo2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="دخول المستخدمين"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:id="@+id/login_email"
+            android:background="@drawable/accountedittext"
+            android:hint="البريد الألكترونى "
+            android:inputType="textEmailAddress"
+            android:textSize="20sp"
+            android:padding="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/accountedittext"
+            android:hint="كلمة السر "
+            android:id="@+id/login_pass"
+            android:layout_marginTop="15dp"
+            android:inputType="textPassword"
+            android:textSize="20sp"
+            android:padding="5dp"/>
+
+        <TextView
+            android:layout_width="160dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="right"
+            android:textSize="15sp"
+            android:text="نسيت كلمة السر "
+            android:id="@+id/forget_pass"
+            android:textColor="#ff0000"
+            android:textStyle="bold"
+            android:padding="5dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="45dp"
+        android:text="دخول"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:layout_gravity="center"
+        android:background="@drawable/bluebutton"
+        android:id="@+id/do5oool"/>
+
+</LinearLayout>
