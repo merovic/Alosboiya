@@ -64,11 +64,14 @@ public class HaragActivity extends Activity implements AdapterView.OnItemSelecte
 
     TinyDB tinyDB;
 
+    String selectedDepartment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_harag);
+
+        selectedDepartment = "";
 
         tinyDB = new TinyDB(getApplicationContext());
 
@@ -86,8 +89,8 @@ public class HaragActivity extends Activity implements AdapterView.OnItemSelecte
         itemLists.add(new ItemList(R.drawable.devices));
         itemLists.add(new ItemList(R.drawable.athath));
         itemLists.add(new ItemList(R.drawable.service));
-        itemLists.add(new ItemList(R.drawable.clothes));
         itemLists.add(new ItemList(R.drawable.animals));
+        itemLists.add(new ItemList(R.drawable.family));
         itemLists.add(new ItemList(R.drawable.monsf));
 
         rvadapter = new IteamListAdapter(itemLists);
@@ -180,40 +183,103 @@ public class HaragActivity extends Activity implements AdapterView.OnItemSelecte
         salesitems.clear();
         salleslistAdapter.notifyDataSetChanged();
 
-        switch (event)
+        if(cityesSpinner.getSelectedItemPosition()==0)
         {
-            case "0":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=عقارات");
-                break;
 
-            case "1":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=سيارات");
-                break;
+            switch (event)
+            {
 
-            case "2":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=الاجهزه");
-                break;
+                case "0":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=عقارات");
+                    selectedDepartment = "عقارات";
+                    break;
 
-            case "3":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=اثاث");
-                break;
+                case "1":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=سيارات");
+                    selectedDepartment = "سيارات";
+                    break;
 
-            case "4":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=الخدمات");
-                break;
+                case "2":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=الاجهزه");
+                    selectedDepartment = "الاجهزه";
+                    break;
 
-            case "5":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=مواشى وحيوانات وطيور");
-                break;
+                case "3":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=اثاث");
+                    selectedDepartment = "اثاث";
+                    break;
 
-            case "6":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=الاسرة المنتجة");
-                break;
+                case "4":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=الخدمات");
+                    selectedDepartment = "الخدمات";
+                    break;
 
-            case "7":
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=قسم غير مصنف");
-                break;
-        }
+                case "5":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=مواشي وحيوانات وطيور");
+                    selectedDepartment = "مواشي وحيوانات وطيور";
+                    break;
+
+                case "6":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=الاسرة المنتجة");
+                    selectedDepartment = "الاسرة المنتجة";
+                    break;
+
+                case "7":
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department=قسم غير مصنف");
+                    selectedDepartment = "قسم غير مصنف";
+                    break;
+            }
+
+        }else
+            {
+
+                switch (event)
+                {
+
+                    case "0":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"عقارات");
+                        selectedDepartment = "عقارات";
+                        break;
+
+                    case "1":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"سيارات");
+                        selectedDepartment = "سيارات";
+                        break;
+
+                    case "2":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"الاجهزه");
+                        selectedDepartment = "الاجهزه";
+                        break;
+
+                    case "3":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"اثاث");
+                        selectedDepartment = "اثاث";
+                        break;
+
+                    case "4":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"الخدمات");
+                        selectedDepartment = "الخدمات";
+                        break;
+
+                    case "5":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"مواشى وحيوانات وطيور");
+                        selectedDepartment = "مواشي وحيوانات وطيور";
+                        break;
+
+                    case "6":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"الاسرة المنتجة");
+                        selectedDepartment = "الاسرة المنتجة";
+                        break;
+
+                    case "7":
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cityesSpinner.getSelectedItem().toString()+"&department="+"قسم غير مصنف");
+                        selectedDepartment = "قسم غير مصنف";
+                        break;
+                }
+
+            }
+
+
     }
 
 
@@ -458,10 +524,24 @@ private void JSON_DATA_WEB_CALL(String URL){
 
         if(position==0)
         {
-            JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj?");
+            if(selectedDepartment.isEmpty())
+            {
+                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj?");
+            }else
+                {
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_Department?Department="+selectedDepartment);
+                }
+
         }else
             {
-                JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city?city="+cities.get(position));
+                if(selectedDepartment.isEmpty())
+                {
+                    JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city?city="+ cities.get(position));
+                }else
+                    {
+                        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_haraj_by_search_city_and_department?city="+ cities.get(position)+"&department="+selectedDepartment);
+                    }
+
             }
 
     }

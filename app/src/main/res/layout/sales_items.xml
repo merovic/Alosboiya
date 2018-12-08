@@ -24,7 +24,8 @@
                 android:id="@+id/sales_image"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:scaleType="fitCenter"
+                android:scaleType="centerInside"
+                android:background="#000"
                 android:src="@drawable/car"/>
 
 

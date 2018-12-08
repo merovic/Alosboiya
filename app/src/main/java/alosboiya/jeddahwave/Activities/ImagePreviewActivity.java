@@ -3,6 +3,8 @@ package alosboiya.jeddahwave.Activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -29,6 +31,9 @@ public class ImagePreviewActivity extends Activity implements BaseSliderView.OnS
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_preview);
 
         imgslider = findViewById(R.id.myslider);
@@ -78,7 +83,7 @@ public class ImagePreviewActivity extends Activity implements BaseSliderView.OnS
             textSliderView
                     .description(name)
                     .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setScaleType(BaseSliderView.ScaleType.CenterInside)
                     .setOnSliderClickListener(this);
 
             //add your extra information

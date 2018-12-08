@@ -76,6 +76,7 @@ public class SearchFragment extends Fragment{
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
+                    salesitems.clear();
                     JSON_DATA_WEB_CALL();
 
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);

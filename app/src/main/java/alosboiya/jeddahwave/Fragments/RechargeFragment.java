@@ -1,5 +1,6 @@
 package alosboiya.jeddahwave.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.Constants;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -31,8 +37,9 @@ import java.util.Objects;
 import alosboiya.jeddahwave.R;
 import alosboiya.jeddahwave.Utils.RequestHandler;
 import alosboiya.jeddahwave.Utils.TinyDB;
+import info.hoang8f.android.segmented.SegmentedGroup;
 
-public class RechargeFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class RechargeFragment extends Fragment implements AdapterView.OnItemSelectedListener,BillingProcessor.IBillingHandler{
 
     public static final String TAG = "ass4";
 
@@ -40,13 +47,22 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
     ImageView userimage;
     EditText n1,n2,n3;
     Spinner rechargespinner;
-    Button rechargebutton;
+    Button rechargebutton,restorebutton;
+    LinearLayout threelayout;
 
     TinyDB tinyDB;
 
-    String user_id,catfinal;
+    String user_id,catfinal,productID;
 
     List<String> cards;
+
+    BillingProcessor bp;
+
+    SegmentedGroup tabsgroup;
+
+    RadioButton cardstab,visatab;
+
+    String twenty,fifty,hundred;
 
     public RechargeFragment() {
 
@@ -63,6 +79,9 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
         super.onViewCreated(view, savedInstanceState);
 
         tinyDB = new TinyDB(getContext());
+
+        bp = BillingProcessor.newBillingProcessor(getContext(), "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhaX84u5V+FAyLE7wRcjlqcINs3lBfn+r3dF72rByLO1V/M5KypzZX4i3zj7sX5Wu5RJVtk4LY1ui3hhUooO2LCNzmdwxKs/3gvoxfNLIK+ThQ2ihH9DKdcPFxGNaNukH/m4y8qvgg1KNwAPzBfjYw9IOypGYAFzB4G+0ozbiYbK5a6JTczWW9881ZibT3/DOeGjEVDIFpqxCeIVhUGti2NHH7Eh/RhLqOyp1wTHBVOJdxg6MkbwDElEs/YOmzAvWuMRKUj5zU5P9CmDzTsYMG6E7ePb/GZ1fuoYYmC0IFRzbFczhWj7pR+qKaiSqvV5q/lg6K7wHxSxijFy+CTCxyQIDAQAB", this);
+        bp.initialize();
 
         username = getActivity().findViewById(R.id.username);
         userbalance = getActivity().findViewById(R.id.userbalance);
@@ -94,6 +113,48 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
             Glide.with(this).load(tinyDB.getString("user_img")).into(userimage);
         }
 
+
+        tabsgroup = getActivity().findViewById(R.id.segmented2);
+
+        cardstab = getActivity().findViewById(R.id.button3);
+        visatab = getActivity().findViewById(R.id.button2);
+
+        cardstab.setChecked(true);
+        visatab.setChecked(false);
+
+        threelayout = getActivity().findViewById(R.id.threelayout);
+        restorebutton = getActivity().findViewById(R.id.restorebutton);
+
+        cardstab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                threelayout.setVisibility(View.VISIBLE);
+                restorebutton.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        visatab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                threelayout.setVisibility(View.GONE);
+                restorebutton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        restorebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                bp.loadOwnedPurchasesFromGoogle();
+                showMessage("تم استرجاع المدفوعات");
+
+            }
+        });
+
+
+
         rechargebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,63 +165,132 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
                 }else
                     {
-                        if(rechargespinner.getSelectedItemPosition()==1)
+
+                        if(threelayout.getVisibility()==View.VISIBLE)
                         {
-                            catfinal = "20";
 
-                        }else if(rechargespinner.getSelectedItemPosition()==2)
-                        {
-                            catfinal = "50";
+                            if(rechargespinner.getSelectedItemPosition()==1)
+                            {
+                                catfinal = "20";
 
-                        }else if(rechargespinner.getSelectedItemPosition()==3)
-                        {
-                            catfinal = "100";
-                        }
+                            }else if(rechargespinner.getSelectedItemPosition()==2)
+                            {
+                                catfinal = "50";
 
-                        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/add_balance?";
+                            }else if(rechargespinner.getSelectedItemPosition()==3)
+                            {
+                                catfinal = "100";
+                            }
 
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
+                            String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/add_balance?";
 
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
-                                        if(response.contains("تم"))
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+
+                                            if(response.contains("تم"))
+                                            {
+
+                                                updateBalance();
+
+                                            }else
+                                            {
+                                                showMessage(response);
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    showMessage("خطأ فى الشبكة");
+
+                                }
+                            }) {
+
+                                @Override
+                                protected Map<String,String> getParams(){
+                                    Map<String,String> params = new HashMap<>();
+                                    params.put("cat",catfinal);
+                                    params.put("id_member", user_id);
+                                    params.put("id_card",n1.getText().toString());
+                                    params.put("n2",n2.getText().toString());
+                                    params.put("n3",n3.getText().toString());
+                                    return params;
+
+                                }
+
+                            };
+
+                            RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+
+
+                        }else
+                            {
+
+
+                                if(rechargespinner.getSelectedItemPosition()==1)
+                                {
+                                    if(tinyDB.getString("twentyToken").equals("com.alosboiya.20riyal"))
+                                    {
+                                        Boolean consumed = bp.consumePurchase("com.alosboiya.20riyal");
+                                        if(consumed)
                                         {
-
+                                            catfinal = "20";
                                             updateBalance();
-
-                                        }else
-                                        {
-                                            showMessage("خطأ فى الشحن");
                                         }
 
+                                    }else
+                                    {
+                                        catfinal = "20";
+                                        productID = "com.alosboiya.20riyal";
+
+                                        bp.purchase(getActivity(), productID);
                                     }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
 
-                                showMessage("خطأ فى الشبكة");
+                                }else if(rechargespinner.getSelectedItemPosition()==2)
+                                {
+                                    if(tinyDB.getString("fiftyToken").equals("com.alosboiya.50riyal"))
+                                    {
+                                        Boolean consumed = bp.consumePurchase("com.alosboiya.50riyal");
+                                        if(consumed)
+                                        {
+                                            catfinal = "50";
+                                            updateBalance();
+                                        }
+
+                                    }else
+                                    {
+                                        catfinal = "50";
+                                        productID = "com.alosboiya.50riyal";
+
+                                        bp.purchase(getActivity(), productID);
+                                    }
+
+                                }else if(rechargespinner.getSelectedItemPosition()==3)
+                                {
+                                    if(tinyDB.getString("hundredToken").equals("com.alosboiya.100riyal"))
+                                    {
+                                        Boolean consumed = bp.consumePurchase("com.alosboiya.100riyal");
+                                        if(consumed)
+                                        {
+                                            catfinal = "100";
+                                            updateBalance();
+                                        }
+
+                                    }else
+                                    {
+                                        catfinal = "100";
+                                        productID = "com.alosboiya.100riyal";
+
+                                        bp.purchase(getActivity(), productID);
+                                    }
+                                }
 
                             }
-                        }) {
 
-                            @Override
-                            protected Map<String,String> getParams(){
-                                Map<String,String> params = new HashMap<>();
-                                params.put("id_member", user_id);
-                                params.put("cat",catfinal);
-                                params.put("id_card",n1.getText().toString());
-                                params.put("n2",n2.getText().toString());
-                                params.put("n3",n3.getText().toString());
-                                return params;
-                            }
-
-
-
-                        };
-
-                        RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
 
                     }
 
@@ -168,6 +298,22 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!bp.handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        if (bp != null) {
+            bp.release();
+        }
+        super.onDestroy();
     }
 
 
@@ -272,6 +418,51 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
+
+
+        switch (productId) {
+            case "com.alosboiya.20riyal":
+                twenty = bp.getPurchaseTransactionDetails(productId).purchaseInfo.purchaseData.purchaseToken;
+                tinyDB.putString("twentyToken", twenty);
+
+                break;
+            case "com.alosboiya.50riyal":
+                fifty = bp.getPurchaseTransactionDetails(productId).purchaseInfo.purchaseData.purchaseToken;
+                tinyDB.putString("fiftyToken", fifty);
+
+                break;
+            case "com.alosboiya.100riyal":
+                hundred = bp.getPurchaseTransactionDetails(productId).purchaseInfo.purchaseData.purchaseToken;
+                tinyDB.putString("hundredToken", hundred);
+
+                break;
+        }
+
+        updateBalance();
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, @Nullable Throwable error) {
+
+        if(errorCode != Constants.BILLING_RESPONSE_RESULT_USER_CANCELED)
+        {
+            showMessage("خطأ فى الشحن");
+        }
+    }
+
+    @Override
+    public void onBillingInitialized() {
 
     }
 }

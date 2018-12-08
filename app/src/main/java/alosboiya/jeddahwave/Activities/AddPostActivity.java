@@ -149,7 +149,15 @@ public class AddPostActivity extends AppCompatActivity implements AdapterView.On
         add_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                volleyConnection();
+
+                if(title.getText().toString().equals("") || phone.getText().toString().equals("") || desc.getText().toString().equals("") || add_department.getSelectedItemPosition()==0)
+                {
+                    showMessage("احد البيانات فارغة");
+                }else
+                    {
+                        volleyConnection();
+                    }
+
             }
         });
 
@@ -245,47 +253,90 @@ public class AddPostActivity extends AppCompatActivity implements AdapterView.On
         {
             if(requestCode == PICK_IMAGE_REQUEST_CAMERA)
             {
-                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-                filePath = getImageUri(getApplicationContext(),bitmap);
+                try
+                {
+                    Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+                    filePath = getImageUri(getApplicationContext(),bitmap);
+
+                    if(pic1.equals("images/imgposting.png") && pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار عدد ١ صورة");
+                        uploadImage(filePath);
+                    }else if(!pic1.equals("images/imgposting.png") && pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار عدد ٢ صورة");
+                        uploadImage(filePath);
+                    }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار عدد ٣ صورة");
+                        uploadImage(filePath);
+                    }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار عدد ٤ صورة");
+                        uploadImage(filePath);
+                    }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار عدد ٥ صورة");
+                        uploadImage(filePath);
+                    }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار عدد ٦ صورة");
+                        uploadImage(filePath);
+                    }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && !pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار عدد ٧ صورة");
+                        uploadImage(filePath);
+                    }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && !pic6.equals("images/imgposting.png") && !pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                    {
+                        pic.setText("تم اختيار الحد الأقصى من الصور");
+                        pic.setEnabled(false);
+                        uploadImage(filePath);
+                    }
+
+                }catch (Exception e)
+                {
+                    pic.setText("");
+                }
+
 
             }else if(requestCode == PICK_IMAGE_REQUEST_GALLERY)
             {
                 filePath = data.getData();
-            }
 
-            if(pic1.equals("images/imgposting.png") && pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار عدد ١ صورة");
-                uploadImage(filePath);
-            }else if(!pic1.equals("images/imgposting.png") && pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار عدد ٢ صورة");
-                uploadImage(filePath);
-            }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار عدد ٣ صورة");
-                uploadImage(filePath);
-            }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار عدد ٤ صورة");
-                uploadImage(filePath);
-            }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار عدد ٥ صورة");
-                uploadImage(filePath);
-            }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار عدد ٦ صورة");
-                uploadImage(filePath);
-            }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && !pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار عدد ٧ صورة");
-                uploadImage(filePath);
-            }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && !pic6.equals("images/imgposting.png") && !pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
-            {
-                pic.setText("تم اختيار الحد الأقصى من الصور");
-                pic.setEnabled(false);
-                uploadImage(filePath);
+                if(pic1.equals("images/imgposting.png") && pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار عدد ١ صورة");
+                    uploadImage(filePath);
+                }else if(!pic1.equals("images/imgposting.png") && pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار عدد ٢ صورة");
+                    uploadImage(filePath);
+                }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار عدد ٣ صورة");
+                    uploadImage(filePath);
+                }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار عدد ٤ صورة");
+                    uploadImage(filePath);
+                }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار عدد ٥ صورة");
+                    uploadImage(filePath);
+                }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار عدد ٦ صورة");
+                    uploadImage(filePath);
+                }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && !pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار عدد ٧ صورة");
+                    uploadImage(filePath);
+                }else if(!pic1.equals("images/imgposting.png") && !pic2.equals("images/imgposting.png") && !pic3.equals("images/imgposting.png") && !pic4.equals("images/imgposting.png") && !pic5.equals("images/imgposting.png") && !pic6.equals("images/imgposting.png") && !pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
+                {
+                    pic.setText("تم اختيار الحد الأقصى من الصور");
+                    pic.setEnabled(false);
+                    uploadImage(filePath);
+                }
             }
 
         }
