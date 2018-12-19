@@ -61,7 +61,7 @@ public class MyAccountFragment extends Fragment {
         username.setText(tinyDB.getString("user_name"));
 
 
-        if(tinyDB.getString("user_img").equals("images/imgposting.png"))
+        if(tinyDB.getString("user_img").equals("images/imgposting.png") || tinyDB.getString("user_img").equals(""))
         {
             Glide.with(this).load(R.drawable.user).into(userimage);
 

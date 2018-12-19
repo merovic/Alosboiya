@@ -3,8 +3,12 @@ package alosboiya.jeddahwave.Activities;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +17,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +29,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -55,6 +65,9 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
     TextView dtitle, ddate, dsname, dlocation, ddescripe ,callnum;
     ImageView share;
     LinearLayout callcustomer;
+    RelativeLayout sliderview,progresslayout;
+
+    VideoView videoView;
 
     RecyclerView commentsRv,suggestRv;
 
@@ -106,6 +119,9 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
         callnum = findViewById(R.id.call_number);
         share = findViewById(R.id.share_sales);
         callcustomer = findViewById(R.id.callcustomer);
+        sliderview = findViewById(R.id.sliderview);
+        videoView = findViewById(R.id.videoview);
+        progresslayout = findViewById(R.id.progress_layout);
 
         comment = findViewById(R.id.comment);
 
@@ -151,6 +167,25 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
             department = extras.getString("item_department");
 
         }
+
+        if(img2.contains("videos"))
+        {
+            videoView.setVisibility(View.VISIBLE);
+            progresslayout.setVisibility(View.GONE);
+            sliderview.setVisibility(View.GONE);
+        }else
+            {
+                videoView.setVisibility(View.GONE);
+                progresslayout.setVisibility(View.GONE);
+                sliderview.setVisibility(View.VISIBLE);
+            }
+
+        Glide.with(this).load(img1).into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, Transition<? super Drawable> transition) {
+                progresslayout.setBackground(resource);
+            }
+        });
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,6 +292,21 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
         imgslider.addOnPageChangeListener(this);
 
 
+
+        MediaController mediaController = new MediaController(this);
+        videoView.setVideoURI(Uri.parse(img2));
+        videoView.requestFocus();
+        videoView.setMediaController(mediaController);
+        mediaController.setAnchorView(videoView);
+        videoView.seekTo(100);
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.setVisibility(View.VISIBLE);
+                progresslayout.setVisibility(View.GONE);
+            }
+        });
 
 
         JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_post_suggest_by_department?Department="+department);

@@ -6,7 +6,9 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +61,7 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
         return new ProfilePostsViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull ProfilePostsViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
@@ -90,6 +93,14 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
         }else
         {
             Glide.with(holder.salesimage.getContext()).load(salesItems.getSellseimage()).into(holder.salesimage);
+        }
+
+        if(salesItems.getImage2().contains("videos"))
+        {
+            holder.videoicon.setVisibility(View.VISIBLE);
+        }else
+        {
+            holder.videoicon.setVisibility(View.INVISIBLE);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -244,7 +255,7 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
     public class ProfilePostsViewHolder extends RecyclerView.ViewHolder {
 
         TextView location , salesname, salesdate , saller_name;
-        ImageView salesimage;
+        ImageView salesimage,videoicon;
         Button delete,edit,update;
 
         public ProfilePostsViewHolder(View itemView) {
@@ -254,6 +265,7 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
             salesdate = itemView.findViewById(R.id.sales_date);
             saller_name = itemView.findViewById(R.id.saller_name);
             salesimage = itemView.findViewById(R.id.sales_image);
+            videoicon = itemView.findViewById(R.id.videoicon);
             delete = itemView.findViewById(R.id.deletepost);
             edit = itemView.findViewById(R.id.editpost);
             update = itemView.findViewById(R.id.updatepost);

@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import alosboiya.jeddahwave.R;
@@ -95,7 +96,7 @@ public class SettingFragment extends Fragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        username = getActivity().findViewById(R.id.username);
+        username = Objects.requireNonNull(getActivity()).findViewById(R.id.username);
         userbalance = getActivity().findViewById(R.id.userbalance);
         userimage = getActivity().findViewById(R.id.userimage);
         usernameedit = getActivity().findViewById(R.id.usernameedit);
@@ -118,7 +119,7 @@ public class SettingFragment extends Fragment {
         setupSpinner();
 
 
-        if(tinyDB.getString("user_img").equals("images/imgposting.png"))
+        if(tinyDB.getString("user_img").equals("images/imgposting.png") || tinyDB.getString("user_img").equals(""))
         {
             Glide.with(this).load(R.drawable.user).into(userimage);
 
@@ -126,13 +127,16 @@ public class SettingFragment extends Fragment {
             String replaced = tinyDB.getString("user_img").replace("~", "");
             String finalstring = "http://alosboiya.com.sa" + replaced;
             Glide.with(this).load(finalstring).into(userimage);
+            imageURL = finalstring;
 
         }else
         {
             Glide.with(this).load(tinyDB.getString("user_img")).into(userimage);
+            imageURL = tinyDB.getString("user_img");
         }
 
         userimageedit.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 showPicturDialog();
@@ -158,18 +162,17 @@ public class SettingFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
 
-                        if(response.equals("True"))
-                        {
                             tinyDB.putString("user_id",user_id);
                             tinyDB.putString("user_name",usernameedit.getText().toString());
                             tinyDB.putString("user_pass",userpasswordedit.getText().toString());
                             tinyDB.putString("user_phone",userphoneedit.getText().toString());
                             tinyDB.putString("user_city",usercityedit.getSelectedItem().toString());
                             tinyDB.putString("user_img",imageURL);
-                        }else
-                            {
-                                showMessage("خطأ فى الحفظ");
-                            }
+
+                            username.setText(usernameedit.getText().toString());
+
+                            showMessage("تم تحديث البيانات");
+
 
                     }
                 }, new Response.ErrorListener() {
@@ -185,11 +188,11 @@ public class SettingFragment extends Fragment {
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<>();
                 params.put("id_member", user_id);
-                params.put("name", usernameedit.getText().toString());
-                params.put("password", userpasswordedit.getText().toString());
                 params.put("city", usercityedit.getSelectedItem().toString());
+                params.put("password", userpasswordedit.getText().toString());
                 params.put("image", imageURL);
                 params.put("phone", userphoneedit.getText().toString());
+                params.put("name", usernameedit.getText().toString());
                 return params;
             }
 
@@ -233,7 +236,7 @@ public class SettingFragment extends Fragment {
         //From Camera
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE
         );
-        if(pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if(pictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
             startActivityForResult(pictureIntent, PICK_IMAGE_REQUEST_CAMERA);
         }
 
@@ -257,22 +260,30 @@ public class SettingFragment extends Fragment {
         {
             if(requestCode == PICK_IMAGE_REQUEST_CAMERA)
             {
-                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+                Bitmap bitmap = (Bitmap)Objects.requireNonNull(data.getExtras()).get("data");
                 filePath = getImageUri(getContext(),bitmap);
 
-            }else if(requestCode == PICK_IMAGE_REQUEST_GALLERY)
-            {
-                filePath = data.getData();
-            }
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
                 userimage.setImageBitmap(bitmap);
 
                 uploadImage(filePath);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            }else {
+
+                filePath = data.getData();
+
+                try {
+
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), filePath);
+                    userimage.setImageBitmap(bitmap);
+
+                    uploadImage(filePath);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
+
         }
     }
 

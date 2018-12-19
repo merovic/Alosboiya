@@ -31,40 +31,51 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/logo2"
-        android:layout_marginTop="80dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:layout_gravity="center_vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageButton
-            android:layout_width="150dp"
-            android:layout_height="170dp"
-            android:background="@drawable/q2"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:layout_margin="20dp"
-            android:id="@+id/tasgelGeded"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:src="@drawable/logo2"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"/>
 
-        <ImageButton
-            android:layout_width="150dp"
-            android:layout_height="170dp"
-            android:background="@drawable/q1"
-            android:scaleType="fitCenter"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:id="@+id/do5olAla3daa"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <ImageButton
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/q2"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:id="@+id/tasgelGeded"/>
+
+            <ImageButton
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/q1"
+                android:scaleType="fitCenter"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:id="@+id/do5olAla3daa"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+
+
 
 </LinearLayout>

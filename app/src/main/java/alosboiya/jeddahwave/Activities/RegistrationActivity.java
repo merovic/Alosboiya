@@ -74,21 +74,19 @@ public class RegistrationActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        showMessage(response);
-                        if(Objects.equals(response, "True")){
-
-                            showMessage("RegistrationActivity Done Successful Congratulations");
-
-                            tinyDB.putString("isLoggedIn","True");
-
+                        if(response.contains("Country")){
 
                             try {
+
+                                showMessage("تم التسجيل بنجاح");
+
+                                tinyDB.putString("isLoggedIn","True");
 
                                 JSONArray js = new JSONArray(response);
 
                                 JSONObject userdate = js.getJSONObject(0);
 
-                                String user_id = (String) userdate.get("Id");
+                                String user_id = String.valueOf(userdate.get("Id")) ;
                                 String user_name = (String) userdate.get("Name");
                                 String user_email = (String) userdate.get("Email");
                                 String user_pass = (String) userdate.get("Password");
@@ -107,7 +105,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 tinyDB.putString("user_country",user_country);
                                 tinyDB.putString("user_city",user_city);
                                 tinyDB.putString("user_url",user_url);
-                                tinyDB.putString("user_img",user_img);
+                                tinyDB.putString("user_img","images/imgposting.png");
                                 tinyDB.putString("user_balance",user_balance);
 
                                 onBackPressed();
@@ -119,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                         }else {
-                            showMessage("Failed please Try Again ");
+                            showMessage(response);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -142,8 +140,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 params.put("cityyyyyyyyyyyyyyyy", elamdenaa.getSelectedItem().toString());
                 return params;
             }
-
-
 
         };
 

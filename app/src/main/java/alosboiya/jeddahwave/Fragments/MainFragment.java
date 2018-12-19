@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import alosboiya.jeddahwave.Activities.HaragActivity;
 import alosboiya.jeddahwave.Activities.MembersActivity;
@@ -36,6 +38,19 @@ public class MainFragment extends Fragment {
         membersbutton = getActivity().findViewById(R.id.membersbutton);
         haragebutton = getActivity().findViewById(R.id.haragebutton);
         garedabutton = getActivity().findViewById(R.id.garedabutton);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        float yInches= metrics.heightPixels/metrics.ydpi;
+        float xInches= metrics.widthPixels/metrics.xdpi;
+        double diagonalInches = Math.sqrt(xInches*xInches + yInches*yInches);
+        if (diagonalInches>=6.5){
+            // 6.5inch device or bigger
+
+        }else{
+            // smaller device
+        }
 
         haragebutton.setOnClickListener(new View.OnClickListener() {
             @Override

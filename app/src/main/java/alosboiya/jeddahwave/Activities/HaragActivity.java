@@ -361,7 +361,7 @@ private void JSON_DATA_WEB_CALL(String URL){
 
                 oursales.setLocation(childJSONObject.getString("City"));
 
-                oursales.setSalesdate(childJSONObject.getString("datee"));
+                oursales.setSalesdate(childJSONObject.getString("datee_c"));
 
                 oursales.setSalesname(childJSONObject.getString("Title"));
 

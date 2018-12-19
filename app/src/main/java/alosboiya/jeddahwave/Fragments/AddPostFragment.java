@@ -1,12 +1,15 @@
 package alosboiya.jeddahwave.Fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +53,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -60,7 +64,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import alosboiya.jeddahwave.Activities.AddPostActivity;
 import alosboiya.jeddahwave.R;
+import alosboiya.jeddahwave.Utils.PathUtil;
 import alosboiya.jeddahwave.Utils.RequestHandler;
 import alosboiya.jeddahwave.Utils.TinyDB;
 
@@ -86,6 +92,8 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
 
     final int PICK_IMAGE_REQUEST_GALLERY = 72;
 
+    final int SELECT_VIDEO = 1;
+
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -105,7 +113,7 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
 
     Toolbar toolbar;
 
-
+    Uri selectedVideoPath;
 
     public AddPostFragment() {
     }
@@ -143,7 +151,7 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
         userBalance.setText(tinyDB.getString("user_balance"));
 
 
-        if(tinyDB.getString("user_img").equals("images/imgposting.png"))
+        if(tinyDB.getString("user_img").equals("images/imgposting.png")  || tinyDB.getString("user_img").equals(""))
         {
             Glide.with(this).load(R.drawable.user).into(profilePic);
 
@@ -163,6 +171,7 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
         desc = getActivity().findViewById(R.id.add_desc);
 
         pic.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 showPicturDialog();
@@ -213,10 +222,10 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
     @RequiresApi(api = Build.VERSION_CODES.M)
     public  void  showPicturDialog()
     {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getContext());
         pictureDialog.setTitle("قم بألختيار");
         String[] pictureDlialogItem={"اختر من المعرض" ,
-                "قم بألتقاط صورة"};
+                "اختر فيديو","قم بألتقاط صورة"};
         pictureDialog.setItems(pictureDlialogItem, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -225,6 +234,9 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                         choosePhotoFromGallary();
                         break;
                     case 1:
+                        chooseVideo();
+                        break;
+                    case 2:
                         takePhotoFromCamera();
                         break;
                 }
@@ -232,20 +244,30 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
         });
         pictureDialog.show();
     }
+
     public void choosePhotoFromGallary() {
+
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent,PICK_IMAGE_REQUEST_GALLERY);
     }
 
     private void takePhotoFromCamera() {
 
-        //From Camera
-        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE
-        );
-        if(pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(pictureIntent.resolveActivity(Objects.requireNonNull(getContext()).getPackageManager()) != null) {
             startActivityForResult(pictureIntent, PICK_IMAGE_REQUEST_CAMERA);
         }
 
+    }
+
+    @SuppressLint("IntentReset")
+    public void chooseVideo()
+    {
+        @SuppressLint("IntentReset") Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        i.setType("video/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        i.putExtra(MediaStore.EXTRA_DURATION_LIMIT,3);
+        startActivityForResult(i, SELECT_VIDEO);
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -310,8 +332,7 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                     pic.setText("");
                 }
 
-            }else if(requestCode == PICK_IMAGE_REQUEST_GALLERY)
-            {
+            }else {
                 filePath = data.getData();
 
                 if(pic1.equals("images/imgposting.png") && pic2.equals("images/imgposting.png") && pic3.equals("images/imgposting.png") && pic4.equals("images/imgposting.png") && pic5.equals("images/imgposting.png") && pic6.equals("images/imgposting.png") && pic7.equals("images/imgposting.png") && pic8.equals("images/imgposting.png"))
@@ -350,7 +371,32 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                 }
             }
 
+        }else if(requestCode == SELECT_VIDEO && resultCode == RESULT_OK && data!= null && data.getData() != null)
+        {
+            pic.setText("تم اختيار فيديو");
+            pic.setEnabled(false);
+            selectedVideoPath = data.getData();
 
+
+            try {
+                String filePath = PathUtil.getPath(getContext(),selectedVideoPath);
+                MediaPlayer mp = MediaPlayer.create(getContext(), Uri.parse(filePath));
+                int duration = mp.getDuration();
+
+                if(duration>31)
+                {
+                    uploadVideo(selectedVideoPath);
+                    Bitmap bMap = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MICRO_KIND);
+                    Uri ass = getImageUri(getContext(),bMap);
+                    uploadThumb(ass);
+                }else
+                {
+                    showMessage("الفيديو اطول من ٣٠ ثانية");
+                }
+
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
 
         }
     }
@@ -365,6 +411,8 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("جارى الرفع٠٠٠");
             progressDialog.show();
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
 
             final StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
             ref.putFile(customfilepath)
@@ -426,6 +474,95 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
                             showMessage("فشل");
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
+
+
+    private void uploadThumb(Uri customfilepath) {
+
+        if(customfilepath != null)
+        {
+
+            final StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            ref.putFile(customfilepath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+                                    pic1 = uri.toString();
+
+                                }
+                            });
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+        }
+    }
+
+
+    private void uploadVideo(Uri video)
+    {
+        if(video != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+
+            final StorageReference ref = storageReference.child("videos/"+ UUID.randomUUID().toString());
+            ref.putFile(video)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+                                    progressDialog.dismiss();
+
+                                    showMessage("تم الرفع بنجاح");
+
+                                    pic2 = uri.toString();
+                                    pic3 = "images/imgposting.png";
+                                    pic4 = "images/imgposting.png";
+                                    pic5 = "images/imgposting.png";
+                                    pic6 = "images/imgposting.png";
+                                    pic7 = "images/imgposting.png";
+                                    pic8 = "images/imgposting.png";
+                                }
+                            });
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

@@ -142,7 +142,7 @@ public class MyAdsFragment extends Fragment {
 
                 oursales.setLocation(childJSONObject.getString("City"));
 
-                oursales.setSalesdate(childJSONObject.getString("datee"));
+                oursales.setSalesdate(childJSONObject.getString("datee_c"));
 
                 oursales.setSalesname(childJSONObject.getString("Title"));
 

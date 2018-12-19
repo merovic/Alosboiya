@@ -50,6 +50,8 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
     Button rechargebutton,restorebutton;
     LinearLayout threelayout;
 
+    EditText addcopon;
+
     TinyDB tinyDB;
 
     String user_id,catfinal,productID;
@@ -60,7 +62,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
     SegmentedGroup tabsgroup;
 
-    RadioButton cardstab,visatab;
+    RadioButton cardstab,visatab,cobonstab;
 
     String twenty,fifty,hundred;
 
@@ -80,10 +82,10 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
         tinyDB = new TinyDB(getContext());
 
-        bp = BillingProcessor.newBillingProcessor(getContext(), "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhaX84u5V+FAyLE7wRcjlqcINs3lBfn+r3dF72rByLO1V/M5KypzZX4i3zj7sX5Wu5RJVtk4LY1ui3hhUooO2LCNzmdwxKs/3gvoxfNLIK+ThQ2ihH9DKdcPFxGNaNukH/m4y8qvgg1KNwAPzBfjYw9IOypGYAFzB4G+0ozbiYbK5a6JTczWW9881ZibT3/DOeGjEVDIFpqxCeIVhUGti2NHH7Eh/RhLqOyp1wTHBVOJdxg6MkbwDElEs/YOmzAvWuMRKUj5zU5P9CmDzTsYMG6E7ePb/GZ1fuoYYmC0IFRzbFczhWj7pR+qKaiSqvV5q/lg6K7wHxSxijFy+CTCxyQIDAQAB", this);
+        bp = BillingProcessor.newBillingProcessor(Objects.requireNonNull(getContext()), "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhaX84u5V+FAyLE7wRcjlqcINs3lBfn+r3dF72rByLO1V/M5KypzZX4i3zj7sX5Wu5RJVtk4LY1ui3hhUooO2LCNzmdwxKs/3gvoxfNLIK+ThQ2ihH9DKdcPFxGNaNukH/m4y8qvgg1KNwAPzBfjYw9IOypGYAFzB4G+0ozbiYbK5a6JTczWW9881ZibT3/DOeGjEVDIFpqxCeIVhUGti2NHH7Eh/RhLqOyp1wTHBVOJdxg6MkbwDElEs/YOmzAvWuMRKUj5zU5P9CmDzTsYMG6E7ePb/GZ1fuoYYmC0IFRzbFczhWj7pR+qKaiSqvV5q/lg6K7wHxSxijFy+CTCxyQIDAQAB", this);
         bp.initialize();
 
-        username = getActivity().findViewById(R.id.username);
+        username = Objects.requireNonNull(getActivity()).findViewById(R.id.username);
         userbalance = getActivity().findViewById(R.id.userbalance);
         userimage = getActivity().findViewById(R.id.userimage);
         n1 = getActivity().findViewById(R.id.n1);
@@ -91,6 +93,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
         n3 = getActivity().findViewById(R.id.n3);
         rechargespinner = getActivity().findViewById(R.id.rechargespinner);
         rechargebutton = getActivity().findViewById(R.id.rechargebutton);
+        addcopon = getActivity().findViewById(R.id.add_copon);
 
         setupSpinner();
 
@@ -99,7 +102,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
         user_id = tinyDB.getString("user_id");
 
-        if(tinyDB.getString("user_img").equals("images/imgposting.png"))
+        if(tinyDB.getString("user_img").equals("images/imgposting.png") || tinyDB.getString("user_img").equals(""))
         {
             Glide.with(this).load(R.drawable.user).into(userimage);
 
@@ -118,9 +121,11 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
         cardstab = getActivity().findViewById(R.id.button3);
         visatab = getActivity().findViewById(R.id.button2);
+        cobonstab = getActivity().findViewById(R.id.button1);
 
         cardstab.setChecked(true);
         visatab.setChecked(false);
+        cobonstab.setChecked(false);
 
         threelayout = getActivity().findViewById(R.id.threelayout);
         restorebutton = getActivity().findViewById(R.id.restorebutton);
@@ -131,6 +136,9 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
                 threelayout.setVisibility(View.VISIBLE);
                 restorebutton.setVisibility(View.INVISIBLE);
+                addcopon.setVisibility(View.GONE);
+                rechargespinner.setVisibility(View.VISIBLE);
+                rechargebutton.setText("شحن الرصيد");
             }
         });
 
@@ -140,6 +148,21 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
                 threelayout.setVisibility(View.GONE);
                 restorebutton.setVisibility(View.VISIBLE);
+                addcopon.setVisibility(View.GONE);
+                rechargespinner.setVisibility(View.VISIBLE);
+                rechargebutton.setText("شحن الرصيد");
+            }
+        });
+
+        cobonstab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                threelayout.setVisibility(View.GONE);
+                restorebutton.setVisibility(View.GONE);
+                addcopon.setVisibility(View.VISIBLE);
+                rechargespinner.setVisibility(View.GONE);
+                rechargebutton.setText("شحن الكوبون");
             }
         });
 
@@ -159,16 +182,18 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void onClick(View v) {
 
-                if(rechargespinner.getSelectedItemPosition()==0)
+                if(addcopon.getVisibility()==View.VISIBLE)
                 {
-                    showMessage("اختر فئة الكارت اولا");
+                    rechargeCopon();
 
-                }else
+                }else if(threelayout.getVisibility()==View.VISIBLE)
+                {
+
+                    if(rechargespinner.getSelectedItemPosition()==0)
                     {
-
-                        if(threelayout.getVisibility()==View.VISIBLE)
+                        showMessage("اختر فئة الكارت اولا");
+                    }else
                         {
-
                             if(rechargespinner.getSelectedItemPosition()==1)
                             {
                                 catfinal = "20";
@@ -225,12 +250,16 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                             };
 
                             RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+                        }
 
+                }else
+                    {
 
+                        if(rechargespinner.getSelectedItemPosition()==0)
+                        {
+                            showMessage("اختر فئة الكارت اولا");
                         }else
                             {
-
-
                                 if(rechargespinner.getSelectedItemPosition()==1)
                                 {
                                     if(tinyDB.getString("twentyToken").equals("com.alosboiya.20riyal"))
@@ -288,13 +317,8 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                                         bp.purchase(getActivity(), productID);
                                     }
                                 }
-
                             }
-
-
                     }
-
-
             }
         });
 
@@ -342,7 +366,6 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                         else
                         {
                             showMessage("خطأ فى تحديث بيانات الرصيد");
-
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -360,6 +383,57 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                 Map<String,String> params = new HashMap<>();
                 params.put("id_member", user_id);
                 params.put("amount", catfinal);
+
+                return params;
+            }
+
+
+        };
+
+        RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+
+    private void rechargeCopon()
+    {
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/copon?";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        if(response.contains("كود الكبون خطاء"))
+                        {
+                            showMessage(response);
+                        }else if(response.contains("مسبقا"))
+                        {
+                            showMessage("هذا الكوبون تم استخدامه مسبقأ");
+                        }else
+                            {
+                                userbalance.setText(response);
+
+                                tinyDB.putString("user_balance",response);
+
+                                showMessage("تم شحن الكوبون بنجاح");
+                            }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                showMessage(error.toString());
+
+            }
+
+        }) {
+
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id_member", user_id);
+                params.put("copon_text", addcopon.getText().toString());
 
                 return params;
             }
@@ -386,8 +460,8 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
         cards.add("٥٠ ريال");
         cards.add("١٠٠ ريال");
 
-        rechargespinner = getActivity().findViewById(R.id.rechargespinner);
-        ArrayAdapter<String> elmadenaAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_item, cards);
+        rechargespinner = Objects.requireNonNull(getActivity()).findViewById(R.id.rechargespinner);
+        ArrayAdapter<String> elmadenaAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),android.R.layout.simple_spinner_item, cards);
         elmadenaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         rechargespinner.setAdapter(elmadenaAdapter);
 
@@ -427,17 +501,17 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
         switch (productId) {
             case "com.alosboiya.20riyal":
-                twenty = bp.getPurchaseTransactionDetails(productId).purchaseInfo.purchaseData.purchaseToken;
+                twenty = Objects.requireNonNull(bp.getPurchaseTransactionDetails(productId)).purchaseInfo.purchaseData.purchaseToken;
                 tinyDB.putString("twentyToken", twenty);
 
                 break;
             case "com.alosboiya.50riyal":
-                fifty = bp.getPurchaseTransactionDetails(productId).purchaseInfo.purchaseData.purchaseToken;
+                fifty = Objects.requireNonNull(bp.getPurchaseTransactionDetails(productId)).purchaseInfo.purchaseData.purchaseToken;
                 tinyDB.putString("fiftyToken", fifty);
 
                 break;
             case "com.alosboiya.100riyal":
-                hundred = bp.getPurchaseTransactionDetails(productId).purchaseInfo.purchaseData.purchaseToken;
+                hundred = Objects.requireNonNull(bp.getPurchaseTransactionDetails(productId)).purchaseInfo.purchaseData.purchaseToken;
                 tinyDB.putString("hundredToken", hundred);
 
                 break;

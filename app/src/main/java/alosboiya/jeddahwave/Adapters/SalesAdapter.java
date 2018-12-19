@@ -1,5 +1,6 @@
 package alosboiya.jeddahwave.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
@@ -47,27 +48,14 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SalesViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull SalesViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         final SalesItems salesItems = oursalesitems.get(position);
 
         holder.location.setText(salesItems.getLocation());
         holder.salesname.setText(salesItems.getSalesname());
         holder.saller_name.setText(salesItems.getSallername());
-
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-        Date newDate;
-        try {
-            newDate = format.parse(salesItems.getSalesdate());
-            format = new SimpleDateFormat("dd/MM/yyyy");
-            String date = format.format(newDate);
-            holder.salesdate.setText(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
+        holder.salesdate.setText(salesItems.getSalesdate());
 
 
         if(salesItems.getSellseimage().equals("images/imgposting.png"))
@@ -106,6 +94,14 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
                 }
             });
 
+        if(salesItems.getImage2().contains("videos"))
+        {
+            holder.videoicon.setVisibility(View.VISIBLE);
+        }else
+            {
+                holder.videoicon.setVisibility(View.INVISIBLE);
+            }
+
 
     }
 
@@ -118,7 +114,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
     class SalesViewHolder extends RecyclerView.ViewHolder {
 
         TextView location , salesname, salesdate , saller_name;
-        ImageView salesimage;
+        ImageView salesimage,videoicon;
 
 
         SalesViewHolder(View itemView) {
@@ -128,6 +124,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
             salesdate = itemView.findViewById(R.id.sales_date);
             saller_name = itemView.findViewById(R.id.saller_name);
             salesimage = itemView.findViewById(R.id.sales_image);
+            videoicon = itemView.findViewById(R.id.videoicon);
 
         }
     }
