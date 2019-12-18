@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -71,19 +72,7 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
         holder.location.setText(salesItems.getLocation());
         holder.salesname.setText(salesItems.getSalesname());
         holder.saller_name.setText(salesItems.getSallername());
-
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-        Date newDate;
-        try {
-            newDate = format.parse(salesItems.getSalesdate());
-            format = new SimpleDateFormat("dd/MM/yyyy");
-            String date = format.format(newDate);
-            holder.salesdate.setText(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        holder.salesdate.setText(postsItems.get(position).getDate());
 
 
 
@@ -109,6 +98,7 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
                 Intent intent = new Intent(context, HarageDetailsActivity.class);
 
                 intent.putExtra("item_id",postsItems.get(position).getID());
+                intent.putExtra("item_owner_id",postsItems.get(position).getIdMember());
                 intent.putExtra("item_title",postsItems.get(position).getSalesname());
                 intent.putExtra("item_owner",postsItems.get(position).getSallername());
                 intent.putExtra("item_city",postsItems.get(position).getLocation());
@@ -142,7 +132,9 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
             @Override
             public void onClick(View v) {
 
-                updatePost(postsItems.get(position).getID());
+                //updatePost(postsItems.get(position).getID());
+                //showMessage(postsItems.get(position).getDate());
+                newUpdatePost(tinyDB.getString("user_id"),postsItems.get(position).getSalesname(),tinyDB.getString("user_img"),postsItems.get(position).getSallername(),postsItems.get(position).getPhone(),tinyDB.getString("user_country"),tinyDB.getString("user_email"),postsItems.get(position).getDescription(),postsItems.get(position).getLocation(),postsItems.get(position).getDepartment(),"",postsItems.get(position).getPhone(),postsItems.get(position).getSubdepartment(),postsItems.get(position).getSellseimage(),postsItems.get(position).getImage2(),postsItems.get(position).getImage3(),postsItems.get(position).getImage4(),postsItems.get(position).getImage5(),postsItems.get(position).getImage6(),postsItems.get(position).getImage7(),postsItems.get(position).getImage8(),postsItems.get(position).getDate());
             }
         });
 
@@ -173,7 +165,7 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
 
     private void deletePost(final String ID, final int position)
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/delete_post?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/delete_post?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -215,9 +207,70 @@ public class ProfilePostsAdapter extends RecyclerView.Adapter<ProfilePostsAdapte
         RequestHandler.getInstance(context).addToRequestQueue(stringRequest);
     }
 
+
+    private void newUpdatePost(final String IDMember,final String postTitle,final String userImage,final String userName,final String userPhone,final String userCountry,final String userEmail,final String postDesc,final String postCity,final String postCat,final String postPrice,final String postTel,final String postSub,final String postImage,final String postImage2,final String postImage3,final String postImage4,final String postImage5,final String postImage6,final String postImage7,final String postImage8,final String date)
+    {
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/update_to_harj?";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        showMessage("تم تحديث الاعلان");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                showMessage(error.toString());
+
+            }
+
+        }) {
+
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id_member", IDMember);
+                params.put("title", postTitle);
+                params.put("imagemember", userImage);
+                params.put("namemember", userName);
+                params.put("Phone", userPhone);
+                params.put("counttttry", userCountry);
+                params.put("emailll", userEmail);
+                params.put("des", postDesc);
+                params.put("ciiiiiiiiiiiiiiiiiiiiiiity", postCity);
+                params.put("category", postCat);
+                params.put("price", postPrice);
+                params.put("tel", postTel);
+                params.put("sub", postSub);
+                params.put("x", postImage);
+                params.put("x_2", postImage2);
+                params.put("x_3", postImage3);
+                params.put("x_4", postImage4);
+                params.put("x_5", postImage5);
+                params.put("x_6", postImage6);
+                params.put("x_7", postImage7);
+                params.put("x_8", postImage8);
+                params.put("device","Android");
+                params.put("datee",date);
+                return params;
+            }
+
+        };
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0,0,0));
+
+        RequestHandler.getInstance(context).addToRequestQueue(stringRequest);
+    }
+
+
     private void updatePost(final String ID)
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/update_to_harj?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/update_to_harj?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 

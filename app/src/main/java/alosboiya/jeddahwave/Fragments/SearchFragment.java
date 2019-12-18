@@ -99,7 +99,7 @@ public class SearchFragment extends Fragment{
 
         progressBar.setVisibility(View.VISIBLE);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/webs.asmx/search_app?text_search="+search.getText().toString(),
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/wsnew.asmx/search_app?text_search="+search.getText().toString(),
 
                 new Response.Listener<String>() {
                     @Override
@@ -156,6 +156,8 @@ public class SearchFragment extends Fragment{
                 }
 
                 oursales.setID(childJSONObject.getString("Id"));
+
+                oursales.setIdMember(childJSONObject.getString("IdMember"));
 
                 oursales.setLocation(childJSONObject.getString("City"));
 

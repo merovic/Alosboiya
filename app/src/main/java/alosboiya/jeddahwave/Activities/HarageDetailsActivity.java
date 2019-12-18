@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,8 @@ import java.util.Map;
 import alosboiya.jeddahwave.Adapters.SalesCommentAdapter;
 import alosboiya.jeddahwave.Adapters.SugesstionAdapter;
 import alosboiya.jeddahwave.Fragments.AddCommentFragment;
+import alosboiya.jeddahwave.Fragments.ReplyMessageFragment;
+import alosboiya.jeddahwave.Fragments.SendMessageFragment;
 import alosboiya.jeddahwave.Models.SalesItems;
 import alosboiya.jeddahwave.Models.SallesCommentItems;
 import alosboiya.jeddahwave.R;
@@ -65,9 +68,11 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
     TextView dtitle, ddate, dsname, dlocation, ddescripe ,callnum;
     ImageView share;
     LinearLayout callcustomer;
-    RelativeLayout sliderview,progresslayout;
+    RelativeLayout sliderview,videolayout;
 
     VideoView videoView;
+
+    ProgressBar progressBar;
 
     RecyclerView commentsRv,suggestRv;
 
@@ -83,13 +88,13 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
 
     TinyDB tinyDB;
 
-    String title,datee,description,city,saller_name,saller_phone,post_url,img1,img2,img3,img4,img5,img6,img7,img8,post_id,department;
+    String title,datee,description,city,saller_name,saller_phone,post_url,img1,img2,img3,img4,img5,img6,img7,img8,post_id,department,item_owner_id;
 
-    Button comment;
+    Button comment,message;
 
     List<String> pics;
 
-    ImageButton home;
+    ImageView home,fullscreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,10 +125,13 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
         share = findViewById(R.id.share_sales);
         callcustomer = findViewById(R.id.callcustomer);
         sliderview = findViewById(R.id.sliderview);
+        videolayout = findViewById(R.id.videolayout);
         videoView = findViewById(R.id.videoview);
-        progresslayout = findViewById(R.id.progress_layout);
+        progressBar = findViewById(R.id.progress);
+        fullscreen = findViewById(R.id.fullscreen);
 
         comment = findViewById(R.id.comment);
+        message = findViewById(R.id.message);
 
         commentsRv = findViewById(R.id.sales_comments_rv);
         suggestRv = findViewById(R.id.sug_sales_Rv);
@@ -164,28 +172,21 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
             img7 = extras.getString("item_img7");
             img8 = extras.getString("item_img8");
             post_id = extras.getString("item_id");
+            item_owner_id = extras.getString("item_owner_id");
             department = extras.getString("item_department");
 
         }
 
         if(img2.contains("videos"))
         {
-            videoView.setVisibility(View.VISIBLE);
-            progresslayout.setVisibility(View.GONE);
+            videolayout.setVisibility(View.VISIBLE);
             sliderview.setVisibility(View.GONE);
         }else
             {
-                videoView.setVisibility(View.GONE);
-                progresslayout.setVisibility(View.GONE);
+                videolayout.setVisibility(View.GONE);
                 sliderview.setVisibility(View.VISIBLE);
             }
 
-        Glide.with(this).load(img1).into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, Transition<? super Drawable> transition) {
-                progresslayout.setBackground(resource);
-            }
-        });
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,6 +246,23 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
             }
         });
 
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(tinyDB.getString("isLoggedIn").equals("True"))
+                {
+                    final FragmentManager fm = getFragmentManager();
+                    SendMessageFragment sendMessageFragment = new SendMessageFragment();
+
+                    sendMessageFragment.show(fm,"TV_tag");
+                }else
+                {
+                    showMessage("سجل الدخول اولا");
+                }
+            }
+        });
+
 
 
         imgslider = findViewById(R.id.myslider);
@@ -256,7 +274,10 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
         {
             if(!pics.get(i).equals("images/imgposting.png"))
             {
-                url_maps.put("Picture "+String.valueOf(i + 1),pics.get(i));
+                if(!pics.get(i).equals(""))
+                {
+                    url_maps.put("Picture "+String.valueOf(i + 1),pics.get(i));
+                }
             }
         }
 
@@ -292,7 +313,6 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
         imgslider.addOnPageChangeListener(this);
 
 
-
         MediaController mediaController = new MediaController(this);
         videoView.setVideoURI(Uri.parse(img2));
         videoView.requestFocus();
@@ -303,16 +323,25 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                videoView.setVisibility(View.VISIBLE);
-                progresslayout.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                fullscreen.setVisibility(View.VISIBLE);
+            }
+        });
+
+        fullscreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HarageDetailsActivity.this,FullScreenVideoActivity.class);
+                intent.putExtra("url",img2);
+                startActivity(intent);
             }
         });
 
 
-        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/webs.asmx/select_post_suggest_by_department?Department="+department);
+        JSON_DATA_WEB_CALL("http://alosboiya.com.sa/wsnew.asmx/select_post_suggest_by_department?Department="+department);
 
 
-        JSON_DATA_WEB_CALL2("http://alosboiya.com.sa/webs.asmx/select_comment_post?id_post="+post_id);
+        JSON_DATA_WEB_CALL2("http://alosboiya.com.sa/wsnew.asmx/select_comment_post?id_post="+post_id);
 
 
 
@@ -322,17 +351,33 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
     public void onButtonClick(AddButtonClick addButtonClick)
     {
 
-        commentsItems.clear();
+        if(addButtonClick.getEvent2().equals("message"))
+        {
 
-        String name = addButtonClick.getEvent();
+            JSON_DATA_WEB_CALL3("http://alosboiya.com.sa/wsnew.asmx/insert_message?","messagedetails",addButtonClick.getEvent());
 
-        volleyConnection(tinyDB.getString("user_id"),name,tinyDB.getString("user_name"),tinyDB.getString("user_img"));
+        }else
+            {
 
-        JSON_DATA_WEB_CALL2("http://alosboiya.com.sa/webs.asmx/select_comment_post?id_post="+post_id);
+                commentsItems.clear();
 
+                String name = addButtonClick.getEvent();
+
+                volleyConnection(tinyDB.getString("user_id"),name,tinyDB.getString("user_name"),tinyDB.getString("user_img"));
+
+                JSON_DATA_WEB_CALL2("http://alosboiya.com.sa/wsnew.asmx/select_comment_post?id_post="+post_id);
+
+                JSON_DATA_WEB_CALL3("http://alosboiya.com.sa/wsnew.asmx/insert_note?","notetitle","قام بالتعليق على أعلانك");
+
+            }
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        videoView.start();
+    }
 
     @Override
     public void onStart() {
@@ -401,6 +446,49 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
 
         requestQueue.add(stringRequest);
     }
+
+    public void JSON_DATA_WEB_CALL3(String URL, final String key, final String content){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                       // showMessage(response);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                showMessage(error.toString());
+
+            }
+        }) {
+
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id_user_send", tinyDB.getString("user_id"));
+                params.put("sender", tinyDB.getString("user_name"));
+                params.put("id_user_recive", item_owner_id);
+                params.put("id_post", post_id);
+                params.put(key, content);
+                params.put("img", tinyDB.getString("user_img"));
+                return params;
+            }
+
+        };
+
+        RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+    }
+
+
+
+
+
+
 
     private void JSON_PARSE_DATA_AFTER_WEBCALL2(String response) {
 
@@ -622,7 +710,7 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
 
     private void volleyConnection(final String id_member, final String comment, final String name_member, final String image)
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/insert_comment?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/insert_comment?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -675,7 +763,13 @@ public class HarageDetailsActivity extends Activity implements BaseSliderView.On
 
         Intent intent = new Intent(getApplicationContext(), ImagePreviewActivity.class);
 
-        intent.putExtra("item_img1",img1);
+        if(!img1.equals(""))
+        {
+            intent.putExtra("item_img1",img1);
+        }else
+            {
+                intent.putExtra("item_img1","images/imgposting.png");
+            }
         intent.putExtra("item_img2",img2);
         intent.putExtra("item_img3",img3);
         intent.putExtra("item_img4",img4);

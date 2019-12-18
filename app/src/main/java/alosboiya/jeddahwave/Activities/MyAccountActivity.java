@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import alosboiya.jeddahwave.Fragments.AddPostFragment;
 import alosboiya.jeddahwave.Fragments.MainProfileFragment;
@@ -17,7 +18,9 @@ import alosboiya.jeddahwave.Utils.TinyDB;
 
 public class MyAccountActivity extends AppCompatActivity {
 
-    Button logeout, credit, setting, myprofile, myads;
+    Button logeout, credit, setting, myprofile;
+
+    ImageButton myads;
 
     TinyDB tinyDB;
 

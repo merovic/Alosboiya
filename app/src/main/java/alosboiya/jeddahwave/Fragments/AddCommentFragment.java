@@ -45,7 +45,7 @@ public class AddCommentFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                 EventBus.getDefault().post(new AddButtonClick(text.getText().toString()));
+                 EventBus.getDefault().post(new AddButtonClick(text.getText().toString(),"comment"));
                  dismiss();
             }
         });

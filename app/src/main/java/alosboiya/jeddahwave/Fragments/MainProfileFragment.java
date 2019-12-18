@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import alosboiya.jeddahwave.Adapters.ProfileCommentsAdapter;
 import alosboiya.jeddahwave.Adapters.ProfilePostsAdapter;
@@ -85,7 +86,7 @@ public class MainProfileFragment extends Fragment {
 
         id = tinyDB.getString("user_id");
 
-        notabslayout = getActivity().findViewById(R.id.notabslayout);
+        notabslayout = Objects.requireNonNull(getActivity()).findViewById(R.id.notabslayout);
 
         noTaps();
 
@@ -164,7 +165,7 @@ public class MainProfileFragment extends Fragment {
 
     private void noTaps() {
 
-        username = getActivity().findViewById(R.id.username);
+        username = Objects.requireNonNull(getActivity()).findViewById(R.id.username);
         userbalance = getActivity().findViewById(R.id.userbalance);
         usernameedit = getActivity().findViewById(R.id.usernameedit);
         userphoneedit = getActivity().findViewById(R.id.userphoneedit);
@@ -206,7 +207,7 @@ public class MainProfileFragment extends Fragment {
 
     private void JSON_DATA_WEB_CALL(){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/webs.asmx/select_comment_profile?id_member="+id,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/wsnew.asmx/select_comment_profile?id_member="+id,
 
                 new Response.Listener<String>() {
                     @Override
@@ -228,7 +229,7 @@ public class MainProfileFragment extends Fragment {
         );
 
 
-        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
         requestQueue.add(stringRequest);
     }
@@ -275,7 +276,7 @@ public class MainProfileFragment extends Fragment {
 
     private void JSON_DATA_WEB_CALL2(String part){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/webs.asmx/"+part+"?id_member="+id,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/wsnew.asmx/"+part+"?id_member="+id,
 
                 new Response.Listener<String>() {
                     @Override
@@ -297,7 +298,7 @@ public class MainProfileFragment extends Fragment {
         );
 
 
-        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
         requestQueue.add(stringRequest);
     }
@@ -333,9 +334,11 @@ public class MainProfileFragment extends Fragment {
 
                 oursales.setID(childJSONObject.getString("Id"));
 
+                oursales.setIdMember(childJSONObject.getString("IdMember"));
+
                 oursales.setLocation(childJSONObject.getString("City"));
 
-                oursales.setSalesdate(childJSONObject.getString("datee"));
+                oursales.setDate(childJSONObject.getString("datee_c"));
 
                 oursales.setSalesname(childJSONObject.getString("Title"));
 

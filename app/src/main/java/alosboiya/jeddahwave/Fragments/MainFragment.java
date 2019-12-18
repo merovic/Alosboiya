@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import alosboiya.jeddahwave.Activities.GaredaIndexSelectionActivity;
 import alosboiya.jeddahwave.Activities.HaragActivity;
 import alosboiya.jeddahwave.Activities.MembersActivity;
 import alosboiya.jeddahwave.Activities.GaredaActivity;

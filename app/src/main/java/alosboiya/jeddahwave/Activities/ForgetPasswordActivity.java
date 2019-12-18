@@ -47,7 +47,7 @@ public class ForgetPasswordActivity extends Activity{
 
     private void volleyConnection()
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/forgetpassword?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/forgetpassword?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 

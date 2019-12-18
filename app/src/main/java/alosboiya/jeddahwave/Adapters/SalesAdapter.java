@@ -57,8 +57,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
         holder.saller_name.setText(salesItems.getSallername());
         holder.salesdate.setText(salesItems.getSalesdate());
 
-
-        if(salesItems.getSellseimage().equals("images/imgposting.png"))
+        if(salesItems.getSellseimage().equals("images/imgposting.png") || salesItems.getSellseimage().equals(""))
         {
             Glide.with(holder.salesimage.getContext()).load(R.drawable.imgposting).into(holder.salesimage);
         }else
@@ -73,6 +72,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
                     Intent intent = new Intent(context, HarageDetailsActivity.class);
 
                     intent.putExtra("item_id",oursalesitems.get(position).getID());
+                    intent.putExtra("item_owner_id",oursalesitems.get(position).getIdMember());
                     intent.putExtra("item_title",oursalesitems.get(position).getSalesname());
                     intent.putExtra("item_owner",oursalesitems.get(position).getSallername());
                     intent.putExtra("item_city",oursalesitems.get(position).getLocation());

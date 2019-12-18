@@ -38,14 +38,14 @@ public class EditPostFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_edit_post,container);
 
-        tinyDB = new TinyDB(getContext());
+        tinyDB = new TinyDB(getActivity());
 
         id = tinyDB.getString("postID");
         phone = tinyDB.getString("postPhone");
         title = tinyDB.getString("postTitle");
         content = tinyDB.getString("postDescription");
 
-        this.getDialog().setTitle("تعديل تعليق");
+        this.getDialog().setTitle("تعديل الأعلان");
 
         quit = rootView.findViewById(R.id.quit);
         text1 = rootView.findViewById(R.id.text1);
@@ -83,7 +83,7 @@ public class EditPostFragment extends DialogFragment {
 
     private void editComment()
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/edite_post?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/edite_post?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -125,10 +125,10 @@ public class EditPostFragment extends DialogFragment {
 
         };
 
-        RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+        RequestHandler.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
     private void showMessage(String _s) {
-        Toast.makeText(getContext(), _s, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), _s, Toast.LENGTH_LONG).show();
     }
 }

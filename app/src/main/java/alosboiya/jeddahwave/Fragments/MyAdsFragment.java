@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import alosboiya.jeddahwave.Adapters.ProfilePostsAdapter;
 import alosboiya.jeddahwave.Adapters.SalesAdapter;
 import alosboiya.jeddahwave.Models.SalesItems;
 import alosboiya.jeddahwave.R;
@@ -37,7 +38,7 @@ public class MyAdsFragment extends Fragment {
     ProgressBar progressBar;
     RecyclerView recyclerView;
 
-    SalesAdapter salleslistAdapter;
+    ProfilePostsAdapter salleslistAdapter;
     ArrayList<SalesItems> salesitems = new ArrayList<>();
 
     RequestQueue requestQueue;
@@ -46,8 +47,7 @@ public class MyAdsFragment extends Fragment {
 
     String id;
 
-    public MyAdsFragment() {
-    }
+    public MyAdsFragment() {}
 
     @Nullable
     @Override
@@ -70,7 +70,7 @@ public class MyAdsFragment extends Fragment {
 
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL,false));
-        salleslistAdapter = new SalesAdapter(salesitems);
+        salleslistAdapter = new ProfilePostsAdapter(salesitems);
 
         JSON_DATA_WEB_CALL();
 
@@ -82,7 +82,7 @@ public class MyAdsFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/webs.asmx/select_post_by_id?id_member="+id,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://alosboiya.com.sa/wsnew.asmx/select_post_by_id?id_member="+id,
 
                 new Response.Listener<String>() {
                     @Override
@@ -140,6 +140,8 @@ public class MyAdsFragment extends Fragment {
 
                 oursales.setID(childJSONObject.getString("Id"));
 
+                oursales.setIdMember(childJSONObject.getString("IdMember"));
+
                 oursales.setLocation(childJSONObject.getString("City"));
 
                 oursales.setSalesdate(childJSONObject.getString("datee_c"));
@@ -159,6 +161,8 @@ public class MyAdsFragment extends Fragment {
                 oursales.setEmail(childJSONObject.getString("Email"));
 
                 oursales.setSubdepartment(childJSONObject.getString("SubDep"));
+
+                oursales.setDate(childJSONObject.getString("datee_c"));
 
                 if (childJSONObject.getString("Image_2") != null) {
 
@@ -277,7 +281,7 @@ public class MyAdsFragment extends Fragment {
 
             }
 
-            salleslistAdapter = new SalesAdapter(salesitems);
+            salleslistAdapter = new ProfilePostsAdapter(salesitems);
             recyclerView.setAdapter(salleslistAdapter);
 
             salleslistAdapter.notifyDataSetChanged();

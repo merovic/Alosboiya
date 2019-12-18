@@ -70,7 +70,7 @@ public class ImagePreviewActivity extends Activity implements BaseSliderView.OnS
         HashMap<String,String> url_maps = new HashMap<>();
         for(int i=0;i<pics.size();i++)
         {
-            if(!pics.get(i).equals("images/imgposting.png"))
+            if(!pics.get(i).equals("images/imgposting.png") || !pics.get(i).equals(""))
             {
                 url_maps.put("Picture "+String.valueOf(i + 1),pics.get(i));
             }

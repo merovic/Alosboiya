@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void volleyConnection()
     {
-        GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/login?";
+        GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/login?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 

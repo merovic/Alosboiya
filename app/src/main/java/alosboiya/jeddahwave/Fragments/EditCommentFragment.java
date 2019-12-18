@@ -39,9 +39,10 @@ public class EditCommentFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
         View rootView=inflater.inflate(R.layout.fragment_add_comment,container);
 
-        tinyDB = new TinyDB(getContext());
+        tinyDB = new TinyDB(getActivity());
 
         id = tinyDB.getString("commentID");
         content = tinyDB.getString("commentContent");
@@ -82,7 +83,7 @@ public class EditCommentFragment extends DialogFragment {
 
     private void editComment()
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/edite_comment?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/edite_comment?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -118,11 +119,11 @@ public class EditCommentFragment extends DialogFragment {
 
         };
 
-        RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+        RequestHandler.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
     private void showMessage(String _s) {
-        Toast.makeText(getContext(), _s, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), _s, Toast.LENGTH_LONG).show();
     }
 
 }

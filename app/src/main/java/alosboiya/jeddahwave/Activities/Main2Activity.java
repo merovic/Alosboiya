@@ -24,9 +24,11 @@ import alosboiya.jeddahwave.Fragments.AddPostFragment;
 import alosboiya.jeddahwave.Fragments.ContactUsFragment;
 import alosboiya.jeddahwave.Fragments.MainFragment;
 import alosboiya.jeddahwave.Fragments.MembersFragment;
+import alosboiya.jeddahwave.Fragments.MessagesFragment;
 import alosboiya.jeddahwave.Fragments.MyAccountFragment;
 import alosboiya.jeddahwave.Fragments.MyAdsFragment;
 import alosboiya.jeddahwave.Fragments.NavigationDrawerFragment;
+import alosboiya.jeddahwave.Fragments.NotificationsFragment;
 import alosboiya.jeddahwave.Fragments.PricesFragment;
 import alosboiya.jeddahwave.Fragments.RechargeFragment;
 import alosboiya.jeddahwave.Fragments.SearchFragment;
@@ -64,7 +66,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
         TextView textView = mToolbar.findViewById(R.id.toolbartext);
         textView.setText("الاسبوعية");
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
+        mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
 
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
@@ -116,16 +118,48 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
                     showMessage("سجل الدخول اولا");
                 }else
                     {
-                        fragment = getSupportFragmentManager().findFragmentByTag(AddPostFragment.TAG);
+                        tinyDB.putString("notype","messages");
+                        fragment = getSupportFragmentManager().findFragmentByTag(MessagesFragment.TAG);
                         if (fragment == null) {
-                            fragment = new AddPostFragment();
+                            fragment = new MessagesFragment();
                         }
-                        trans.replace(R.id.container, fragment, AddPostFragment.TAG);
+                        trans.replace(R.id.container, fragment, MessagesFragment.TAG);
                     }
 
                 break;
 
             case 5: //الرئيسية//todo
+                if(tinyDB.getString("isLoggedIn").equals("False"))
+                {
+                    showMessage("سجل الدخول اولا");
+                }else
+                {
+                    tinyDB.putString("notype","notifications");
+                    fragment = getSupportFragmentManager().findFragmentByTag(NotificationsFragment.TAG);
+                    if (fragment == null) {
+                        fragment = new NotificationsFragment();
+                    }
+                    trans.replace(R.id.container, fragment, NotificationsFragment.TAG);
+                }
+
+                break;
+
+            case 6: //الرئيسية//todo
+                if(tinyDB.getString("isLoggedIn").equals("False"))
+                {
+                    showMessage("سجل الدخول اولا");
+                }else
+                {
+                    fragment = getSupportFragmentManager().findFragmentByTag(AddPostFragment.TAG);
+                    if (fragment == null) {
+                        fragment = new AddPostFragment();
+                    }
+                    trans.replace(R.id.container, fragment, AddPostFragment.TAG);
+                }
+
+                break;
+
+            case 7: //الرئيسية//todo
                 if(tinyDB.getString("isLoggedIn").equals("False"))
                 {
                     showMessage("سجل الدخول اولا");
@@ -140,7 +174,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
 
                 break;
 
-            case 6: //الرئيسية//todo
+            case 8: //الرئيسية//todo
                 if(tinyDB.getString("isLoggedIn").equals("False"))
                 {
                     showMessage("سجل الدخول اولا");
@@ -155,7 +189,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
 
                 break;
 
-            case 7: //الرئيسية//todo
+            case 9: //الرئيسية//todo
                 if(tinyDB.getString("isLoggedIn").equals("False"))
                 {
                     showMessage("سجل الدخول اولا");
@@ -170,7 +204,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
 
                 break;
 
-            case 8: //الرئيسية//todo
+            case 10: //الرئيسية//todo
                 fragment = getSupportFragmentManager().findFragmentByTag(TermsFragment.TAG);
                 if (fragment == null) {
                     fragment = new TermsFragment();
@@ -178,7 +212,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
                 trans.replace(R.id.container, fragment, TermsFragment.TAG);
                 break;
 
-            case 9: //الرئيسية//todo
+            case 11: //الرئيسية//todo
                 fragment = getSupportFragmentManager().findFragmentByTag(PricesFragment.TAG);
                 if (fragment == null) {
                     fragment = new PricesFragment();
@@ -186,23 +220,23 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
                 trans.replace(R.id.container, fragment, PricesFragment.TAG);
                 break;
 
-            case 10: //الرئيسية//todo
-                fragment = getSupportFragmentManager().findFragmentByTag(MembersFragment.TAG);
-                if (fragment == null) {
-                    fragment = new MembersFragment();
-                }
-                trans.replace(R.id.container, fragment, MembersFragment.TAG);
-                break;
-
-            case 11: //الرئيسية//todo
-                fragment = getSupportFragmentManager().findFragmentByTag(MembersFragment.TAG);
-                if (fragment == null) {
-                    fragment = new MembersFragment();
-                }
-                trans.replace(R.id.container, fragment, MembersFragment.TAG);
-                break;
-
             case 12: //الرئيسية//todo
+                fragment = getSupportFragmentManager().findFragmentByTag(MembersFragment.TAG);
+                if (fragment == null) {
+                    fragment = new MembersFragment();
+                }
+                trans.replace(R.id.container, fragment, MembersFragment.TAG);
+                break;
+
+            case 13: //الرئيسية//todo
+                fragment = getSupportFragmentManager().findFragmentByTag(MembersFragment.TAG);
+                if (fragment == null) {
+                    fragment = new MembersFragment();
+                }
+                trans.replace(R.id.container, fragment, MembersFragment.TAG);
+                break;
+
+            case 14: //الرئيسية//todo
 
                 tinyDB.putString("isLoggedIn","False");
 

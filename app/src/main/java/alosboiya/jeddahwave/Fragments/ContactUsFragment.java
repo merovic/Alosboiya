@@ -45,6 +45,7 @@ public class ContactUsFragment extends Fragment implements AdvancedWebView.Liste
         toolbar.setVisibility(View.GONE);
 
         mWebView = getActivity().findViewById(R.id.webview);
+
         mWebView.setListener(getActivity(), this);
         mWebView.loadUrl("http://alosboiya.com.sa/contact.html?fbclid=IwAR0yM4qHVIvHFuFOvlf6c5LTFXYmnhHKTgnWc579PufrRgv9pcl6T1M-bPc");
         mWebView.zoomOut();

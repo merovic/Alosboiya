@@ -207,7 +207,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                                 catfinal = "100";
                             }
 
-                            String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/add_balance?";
+                            String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/add_balance?";
 
                             StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -218,7 +218,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                                             if(response.contains("تم"))
                                             {
 
-                                                updateBalance();
+                                                updateBalanceRechargeCards();
 
                                             }else
                                             {
@@ -268,7 +268,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                                         if(consumed)
                                         {
                                             catfinal = "20";
-                                            updateBalance();
+                                            updateBalanceInAppPurchases();
                                         }
 
                                     }else
@@ -287,7 +287,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                                         if(consumed)
                                         {
                                             catfinal = "50";
-                                            updateBalance();
+                                            updateBalanceInAppPurchases();
                                         }
 
                                     }else
@@ -306,7 +306,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                                         if(consumed)
                                         {
                                             catfinal = "100";
-                                            updateBalance();
+                                            updateBalanceInAppPurchases();
                                         }
 
                                     }else
@@ -340,10 +340,22 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
         super.onDestroy();
     }
 
-
-    private void updateBalance()
+    private void updateBalanceRechargeCards()
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/balance_in_app?";
+
+        String finalBalance = String.valueOf(Integer.parseInt(catfinal) + Integer.parseInt(userbalance.getText().toString()));
+
+        userbalance.setText(finalBalance);
+
+        tinyDB.putString("user_balance",finalBalance);
+
+        showMessage("تم شحن الكارت بنجاح");
+
+    }
+
+    private void updateBalanceInAppPurchases()
+    {
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/balance_in_app?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -396,7 +408,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
 
     private void rechargeCopon()
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/copon?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/copon?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -407,7 +419,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                         if(response.contains("كود الكبون خطاء"))
                         {
                             showMessage(response);
-                        }else if(response.contains("مسبقا"))
+                        }else if(response.contains("قبل"))
                         {
                             showMessage("هذا الكوبون تم استخدامه مسبقأ");
                         }else
@@ -517,7 +529,7 @@ public class RechargeFragment extends Fragment implements AdapterView.OnItemSele
                 break;
         }
 
-        updateBalance();
+        updateBalanceInAppPurchases();
 
     }
 

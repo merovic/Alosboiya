@@ -106,7 +106,7 @@ public class ProfileCommentsAdapter extends RecyclerView.Adapter<ProfileComments
 
     private void deleteComment(final String ID, final int position)
     {
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/delete_comment?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/delete_comment?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 

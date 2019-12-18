@@ -223,25 +223,31 @@
 
             </LinearLayout>
 
-
-            <VideoView
-                android:id="@+id/videoview"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:visibility="gone"
-                android:layout_gravity="center"/>
-
             <RelativeLayout
-                android:id="@+id/progress_layout"
+                android:id="@+id/videolayout"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/imgposting">
+                android:layout_marginLeft="15dp">
+
+                <VideoView
+                    android:id="@+id/videoview"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:visibility="visible"
+                    android:layout_gravity="center"/>
+
+                <ImageView
+                    android:id="@+id/fullscreen"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_fullscreen_black_24dp"
+                    android:layout_margin="10dp"
+                    android:visibility="invisible"
+                    android:layout_alignParentEnd="true"/>
 
                 <ProgressBar
+                    android:id="@+id/progress"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"/>
@@ -317,18 +323,42 @@
                 android:id="@+id/sales_comments_rv">
             </android.support.v7.widget.RecyclerView>
 
-            <Button
-                android:id="@+id/comment"
-                android:layout_width="180dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="اضف تعليق"
-                android:textColor="#fff"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:background="@drawable/bluebutton2"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="اضف تعليق"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/bluebutton2"/>
+
+                <Button
+                    android:id="@+id/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="أرسل رسالة"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/bluebutton2"/>
+
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

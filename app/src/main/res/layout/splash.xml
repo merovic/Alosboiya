@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:id="@+id/text2"
         android:scaleType="fitXY"
-        android:src="@drawable/newsplash"/>
+        android:src="@drawable/newsplashalosboiyacroped"/>
 
     <TextView
         android:layout_width="30dp"
@@ -16,6 +16,7 @@
         android:id="@+id/text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="190dp"
+        android:visibility="gone"
         android:background="@drawable/loadd" />
 
 </RelativeLayout>

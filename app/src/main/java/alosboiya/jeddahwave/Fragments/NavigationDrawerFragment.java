@@ -143,7 +143,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         items.add(new NavigationItem("الرئيسية", getResources().getDrawable(R.drawable.home2)));
         items.add(new NavigationItem("البحث", getResources().getDrawable(R.drawable.search)));
         items.add(new NavigationItem("نبذه عنا", getResources().getDrawable(R.drawable.flag)));
-        items.add(new NavigationItem("أتصل بنا", getResources().getDrawable(R.drawable.call)));
+        items.add(new NavigationItem("أتصل بنا", getResources().getDrawable(R.drawable.telephone)));
+        items.add(new NavigationItem("الرسائل", getResources().getDrawable(R.drawable.call)));
+        items.add(new NavigationItem("الأشعارات", getResources().getDrawable(R.drawable.notificationsbutton)));
         items.add(new NavigationItem("أضف أعلانك", getResources().getDrawable(R.drawable.add)));
         items.add(new NavigationItem("اعلاناتى", getResources().getDrawable(R.drawable.ads)));
         items.add(new NavigationItem("الصفحة الشخصية", getResources().getDrawable(R.drawable.usersilhouette2)));

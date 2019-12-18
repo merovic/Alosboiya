@@ -84,15 +84,16 @@
             android:id="@+id/myprofile"
             android:background="@drawable/bluebutton2"/>
 
-        <Button
+        <ImageButton
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="اعلاناتي"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:textColor="#fff"
             android:textSize="15sp"
             android:id="@+id/announcepage"
+            android:src="@drawable/add"
             android:background="@drawable/bluebutton2"/>
 
     </LinearLayout>
@@ -102,7 +103,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:focusable="true" />
 
 
 </LinearLayout>

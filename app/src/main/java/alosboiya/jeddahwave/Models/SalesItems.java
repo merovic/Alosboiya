@@ -4,6 +4,7 @@ package alosboiya.jeddahwave.Models;
 public class SalesItems {
 
     private String ID;
+    private String IdMember;
     private String location;
     private String salesname;
     private String salesdate;
@@ -22,6 +23,7 @@ public class SalesItems {
     private String image6;
     private String image7;
     private String image8;
+    private String date;
 
 
     public String getID() {
@@ -30,6 +32,14 @@ public class SalesItems {
 
     public void setID(String ID) {
         this.ID = ID;
+    }
+
+    public String getIdMember() {
+        return IdMember;
+    }
+
+    public void setIdMember(String idMember) {
+        IdMember = idMember;
     }
 
     public String getLocation() {
@@ -174,5 +184,13 @@ public class SalesItems {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

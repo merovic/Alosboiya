@@ -13,7 +13,8 @@
 
 <application
     android:allowBackup="true"
-    android:icon="@drawable/icon"
+    android:icon="@mipmap/ic_launcher"
+    android:roundIcon="@mipmap/ic_launcher_rounded"
     android:label="@string/app_name"
     android:supportsRtl="false"
     android:theme="@style/AppTheme"
@@ -25,7 +26,15 @@
         android:name="android.max_aspect"
         android:value="2.1"/>
 
-    <activity android:name=".Utils.Splash"/>
+    <activity android:name=".Utils.Splash">
+
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+
+            <category android:name="android.intent.category.LAUNCHER"/>
+        </intent-filter>
+
+    </activity>
 
     <activity android:name=".OldProject.MainActivity"/>
 
@@ -63,12 +72,16 @@
     <activity android:name=".Activities.ForgetPassword2Activity"/>
 
     <activity android:name=".Utils.SplashNewActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
 
-            <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
     </activity>
+
+    <activity android:name=".Activities.FullScreenVideoActivity"/>
+
+    <activity android:name=".Activities.MyPostDetails"/>
+
+    <activity android:name=".Activities.GaredaIndexSelectionActivity"/>
+
+    <activity android:name=".Activities.IndexActivity"/>
 
 
 </application>

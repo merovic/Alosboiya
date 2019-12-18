@@ -48,6 +48,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import alosboiya.jeddahwave.R;
+import alosboiya.jeddahwave.Utils.FirebaseUploader;
 import alosboiya.jeddahwave.Utils.RequestHandler;
 import alosboiya.jeddahwave.Utils.TinyDB;
 
@@ -91,7 +92,7 @@ public class SettingFragment extends Fragment {
 
         tinyDB = new TinyDB(getContext());
 
-        FirebaseApp.initializeApp(getContext());
+        FirebaseApp.initializeApp(Objects.requireNonNull(getActivity()));
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -122,6 +123,7 @@ public class SettingFragment extends Fragment {
         if(tinyDB.getString("user_img").equals("images/imgposting.png") || tinyDB.getString("user_img").equals(""))
         {
             Glide.with(this).load(R.drawable.user).into(userimage);
+            imageURL = "images/imgposting.png";
 
         }else if (tinyDB.getString("user_img").contains("~")) {
             String replaced = tinyDB.getString("user_img").replace("~", "");
@@ -154,7 +156,7 @@ public class SettingFragment extends Fragment {
 
     private void saveData() {
 
-        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/edite_profile?";
+        String GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/edite_profile?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -205,9 +207,9 @@ public class SettingFragment extends Fragment {
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public  void  showPicturDialog()
+    public void showPicturDialog()
     {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         pictureDialog.setTitle("قم بألختيار");
         String[] pictureDlialogItem={"اختر من المعرض" ,
                 "قم بألتقاط صورة"};
@@ -234,8 +236,7 @@ public class SettingFragment extends Fragment {
     private void takePhotoFromCamera() {
 
         //From Camera
-        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE
-        );
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(pictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
             startActivityForResult(pictureIntent, PICK_IMAGE_REQUEST_CAMERA);
         }
@@ -265,7 +266,9 @@ public class SettingFragment extends Fragment {
 
                 userimage.setImageBitmap(bitmap);
 
-                uploadImage(filePath);
+                //uploadImage(filePath);
+
+               imageURL =  new FirebaseUploader().uploadImage(filePath,getActivity(),false);
 
             }else {
 
@@ -276,7 +279,9 @@ public class SettingFragment extends Fragment {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), filePath);
                     userimage.setImageBitmap(bitmap);
 
-                    uploadImage(filePath);
+                    //uploadImage(filePath);
+
+                    imageURL =  new FirebaseUploader().uploadImage(filePath,getActivity(),false);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -370,6 +375,14 @@ public class SettingFragment extends Fragment {
         cities.add("جازان");
         cities.add("القصيم");
         cities.add("عسير");
+        cities.add("الباحه");
+        cities.add("الظهران");
+        cities.add("الخبر");
+        cities.add("الدوادمى");
+        cities.add("الشرقية");
+        cities.add("الحدود الشمالية");
+        cities.add("الجوف");
+        cities.add("عنيزة");
 
         usercityedit = getActivity().findViewById(R.id.usercityedit);
         ArrayAdapter<String> elmadenaAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_item, cities);

@@ -35,6 +35,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -77,7 +78,7 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
     public static final String TAG = "ass3";
 
     private static final String[] elmadena = {"الرياض" ,"مكة المكرمة" ,  "الدمام",
-            "المدينة المنورة","جده","الأحساء","الطائف","بريدة","تبوك","القطيف","خميس مشيط","حائل","حفر الباطن","الجبيل","الخرج","أبها","نجران","ينبع","القنفذة","جازان","القصيم","عسير"};
+            "المدينة المنورة","جده","الأحساء","الطائف","بريدة","تبوك","القطيف","خميس مشيط","حائل","حفر الباطن","الجبيل","الخرج","أبها","نجران","ينبع","القنفذة","جازان","القصيم","عسير","الباحه","الظهران","الخبر","الدوادمى","الشرقية","الحدود الشمالية","الجوف","عنيزة"};
 
     List<String> categories = new ArrayList<>();
     List<String> subCategories = new ArrayList<>();
@@ -93,6 +94,8 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
     final int PICK_IMAGE_REQUEST_GALLERY = 72;
 
     final int SELECT_VIDEO = 1;
+
+    final int PICK_VIDEO = 15;
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -182,7 +185,40 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
         add_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                volleyConnection();
+
+                if(title.getText().toString().equals("") || title.getText().toString().equals(" ") || title.getText().toString().equals("  ") || phone.getText().toString().equals("") || desc.getText().toString().equals("") || add_department.getSelectedItemPosition()==0)
+                {
+                    showMessage("احد البيانات فارغة");
+                }else
+                {
+                    if(phone.getText().toString().startsWith("05"))
+                    {
+                        if(pic1.equals(""))
+                        {
+                            showMessage("قم برفع الصورؤ مرة اخرى");
+
+                            pic.setHint("أضف صور او فيديو");
+                            pic.setText("");
+                            pic.setEnabled(true);
+
+                            pic1 = "images/imgposting.png";
+                            pic2 = "images/imgposting.png";
+                            pic3 = "images/imgposting.png";
+                            pic4 = "images/imgposting.png";
+                            pic5 = "images/imgposting.png";
+                            pic6 = "images/imgposting.png";
+                            pic7 = "images/imgposting.png";
+                            pic8 = "images/imgposting.png";
+                        }else
+                        {
+                            volleyConnection();
+                        }
+                    }else
+                        {
+                            showMessage("الرقم خطأ");
+                        }
+
+                }
             }
         });
 
@@ -224,8 +260,8 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
     {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getContext());
         pictureDialog.setTitle("قم بألختيار");
-        String[] pictureDlialogItem={"اختر من المعرض" ,
-                "اختر فيديو","قم بألتقاط صورة"};
+        String[] pictureDlialogItem={"اختر صورة من المعرض" ,
+                "التقط فيديو","اختر فيديو","قم بألتقاط صورة"};
         pictureDialog.setItems(pictureDlialogItem, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -234,9 +270,12 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                         choosePhotoFromGallary();
                         break;
                     case 1:
-                        chooseVideo();
+                        takeVideoFromCamera();
                         break;
                     case 2:
+                        chooseVideoFromGallery();
+                        break;
+                    case 3:
                         takePhotoFromCamera();
                         break;
                 }
@@ -254,14 +293,20 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
     private void takePhotoFromCamera() {
 
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(pictureIntent.resolveActivity(Objects.requireNonNull(getContext()).getPackageManager()) != null) {
+        if(pictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivityForResult(pictureIntent, PICK_IMAGE_REQUEST_CAMERA);
         }
+    }
 
+    private void takeVideoFromCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if(intent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivityForResult(intent, PICK_VIDEO);
+        }
     }
 
     @SuppressLint("IntentReset")
-    public void chooseVideo()
+    public void chooseVideoFromGallery()
     {
         @SuppressLint("IntentReset") Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         i.setType("video/*");
@@ -371,31 +416,37 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                 }
             }
 
-        }else if(requestCode == SELECT_VIDEO && resultCode == RESULT_OK && data!= null && data.getData() != null)
+        }else if(requestCode == SELECT_VIDEO  || requestCode == PICK_VIDEO && resultCode == RESULT_OK && data!= null && data.getData() != null)
         {
-            pic.setText("تم اختيار فيديو");
-            pic.setEnabled(false);
-            selectedVideoPath = data.getData();
+            try{
+                pic.setText("تم اختيار فيديو");
+                pic.setEnabled(false);
+                selectedVideoPath = data.getData();
 
+                try {
+                    String filePath = PathUtil.getPath(getContext(),selectedVideoPath);
+                    MediaPlayer mp = MediaPlayer.create(getContext(), Uri.parse(filePath));
+                    int duration = mp.getDuration();
 
-            try {
-                String filePath = PathUtil.getPath(getContext(),selectedVideoPath);
-                MediaPlayer mp = MediaPlayer.create(getContext(), Uri.parse(filePath));
-                int duration = mp.getDuration();
+                    if(duration>46)
+                    {
+                        uploadVideo(selectedVideoPath);
+                        Bitmap bMap = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
+                        Uri ass = getImageUri(getContext(),bMap);
+                        uploadThumb(ass);
+                    }else
+                    {
+                        showMessage("الفيديو اطول من ٣٠ ثانية");
+                    }
 
-                if(duration>31)
-                {
-                    uploadVideo(selectedVideoPath);
-                    Bitmap bMap = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MICRO_KIND);
-                    Uri ass = getImageUri(getContext(),bMap);
-                    uploadThumb(ass);
-                }else
-                {
-                    showMessage("الفيديو اطول من ٣٠ ثانية");
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
+            }catch (Exception e)
+            {
+                pic.setText("");
+                pic.setEnabled(true);
             }
 
         }
@@ -581,7 +632,7 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
 
     public void volleyConnection()
     {
-        GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/add_post?";
+        GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/add_post?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 
@@ -590,6 +641,8 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                     public void onResponse(String response) {
 
                         showMessage(response);
+
+                        add_post.setEnabled(false);
 
                         volleyConnection2();
 
@@ -622,12 +675,13 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
                 params.put("x_6", pic6);
                 params.put("x_7", pic7);
                 params.put("x_8", pic8);
+                params.put("device","Android");
                 return params;
             }
 
-
-
         };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0,0,0));
 
         RequestHandler.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
@@ -637,7 +691,7 @@ public class AddPostFragment extends Fragment implements AdapterView.OnItemSelec
 
     private void volleyConnection2()
     {
-        GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/webs.asmx/login?";
+        GET_JSON_DATA_HTTP_URL = "http://alosboiya.com.sa/wsnew.asmx/login?";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_JSON_DATA_HTTP_URL,
 

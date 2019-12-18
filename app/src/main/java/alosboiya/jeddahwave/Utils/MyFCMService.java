@@ -17,11 +17,12 @@ import alosboiya.jeddahwave.R;
 
 public class MyFCMService extends FirebaseMessagingService{
 
+    TinyDB tinyDB;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         sendNotification(remoteMessage.getNotification().getBody());
-
     }
 
     private void sendNotification(String messageBody) {
@@ -29,6 +30,12 @@ public class MyFCMService extends FirebaseMessagingService{
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
+
+        //---------
+        tinyDB = new TinyDB(getApplicationContext());
+        int count = tinyDB.getInt("count");
+        tinyDB.putInt("count",count+1);
+        //---------
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,"ID")
@@ -39,8 +46,7 @@ public class MyFCMService extends FirebaseMessagingService{
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }

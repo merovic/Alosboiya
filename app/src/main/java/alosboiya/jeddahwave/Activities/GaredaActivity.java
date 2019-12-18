@@ -45,6 +45,7 @@ public class GaredaActivity extends Activity implements AdvancedWebView.Listener
           //  }
         }
 
+        @SuppressLint("SetJavaScriptEnabled")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
