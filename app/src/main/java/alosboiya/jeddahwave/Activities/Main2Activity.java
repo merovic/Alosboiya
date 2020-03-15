@@ -41,7 +41,6 @@ import alosboiya.jeddahwave.Utils.TinyDB;
 
 public class Main2Activity extends AppCompatActivity implements NavigationDrawerCallbacks {
 
-
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
 
@@ -55,7 +54,6 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
         setSupportActionBar(mToolbar);
 
         tinyDB = new TinyDB(this);
-
 
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setTitle("الاسبوعية");
