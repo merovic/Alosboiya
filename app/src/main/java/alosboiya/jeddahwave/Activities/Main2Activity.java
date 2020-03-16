@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import alosboiya.jeddahwave.Fragments.AboutUsFragment;
 import alosboiya.jeddahwave.Fragments.AddPostFragment;
 import alosboiya.jeddahwave.Fragments.ContactUsFragment;
+import alosboiya.jeddahwave.Fragments.HaragFragment;
 import alosboiya.jeddahwave.Fragments.MainFragment;
 import alosboiya.jeddahwave.Fragments.MembersFragment;
 import alosboiya.jeddahwave.Fragments.MessagesFragment;
@@ -79,11 +80,11 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
         FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
         switch(position){
             case 0: //الرئيسية//todo
-                fragment = getSupportFragmentManager().findFragmentByTag(MainFragment.TAG);
+                fragment = getSupportFragmentManager().findFragmentByTag(HaragFragment.TAG);
                 if (fragment == null) {
-                    fragment = new MainFragment();
+                    fragment = new HaragFragment();
                 }
-                trans.replace(R.id.container, fragment, MainFragment.TAG);
+                trans.replace(R.id.container, fragment, HaragFragment.TAG);
                 break;
 
             case 1: //الرئيسية//todo
@@ -219,14 +220,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationDrawer
                 break;
 
             case 12: //الرئيسية//todo
-                fragment = getSupportFragmentManager().findFragmentByTag(MembersFragment.TAG);
-                if (fragment == null) {
-                    fragment = new MembersFragment();
-                }
-                trans.replace(R.id.container, fragment, MembersFragment.TAG);
-                break;
 
-            case 13: //الرئيسية//todo
+            case 13:
                 fragment = getSupportFragmentManager().findFragmentByTag(MembersFragment.TAG);
                 if (fragment == null) {
                     fragment = new MembersFragment();
